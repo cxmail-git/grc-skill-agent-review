@@ -532,3 +532,4 @@ org:
   - `gsk-eu-art14.yaml`：EU Art.14(1) 人工监督（Art.113 合并版适用日 **2027-12-02**）；
   - `gsk-cn-genai-art7.yaml`：CN 暂行办法第七条训练数据（`locator: 第七条`，验证 C4 第 6 形态）。
 - 两份样例均已用 29 字段全量填写，用于检验：字段是否够用、`locator` 是否能表达 CN、`verbatim_excerpt` 是否可逐字落盘。
+- **摘录候选**：`docs/research/excerpt-candidates.md` —— 53 条各给候选原文（截断 420 字）；W1 按完整句重抄、Tier A 核验后落快照。
