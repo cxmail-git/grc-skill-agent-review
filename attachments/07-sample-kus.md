@@ -1,4 +1,4 @@
-# 样例 KU（v0.2：29 字段 + gap + 逐字义务）
+# 样例 KU（v0.3）
 
 ## gsk-eu-art14.yaml
 
@@ -40,10 +40,10 @@ confidence: high
 source_class_confidence: high
 as_of: 2026-10-31
 locator: "Art.14(1)"
-registry_id: gsk-eu-art14
+registry_id: reg-eu-ai-act
 snapshot_ref: "snapshots/gsk-eu-art14.md#p1"
 first_seen: 2026-10-31T00:00:00-04:00
-fingerprint: "minhash96:000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001"
+fingerprint: "minhash96:4c6ea475a7539db34ac421e73efc5f8fd7cb19e6096f79a80be8d625a6a1a7f7e46a1fd06331e9ec19cd6bbe0a8ecb2d"
 gap:
   - field: definition
     reason: "样例：概念字段待 W1 结合 concept 页补"
@@ -62,7 +62,7 @@ gap:
     owner: "R-2 / 待指定"
     due: 2026-11-07
   - field: evidence_requirement
-    reason: "样例：证据要求待 W1 从 Annex IV / Art.14 上下文补"
+    reason: "样例：证据要求待 W1 从 Art.14 与 Art.16 义务链推导"
     owner: "R-2 / 待指定"
     due: 2026-11-07
 
@@ -122,10 +122,10 @@ confidence: high
 source_class_confidence: high
 as_of: 2026-10-31
 locator: "第七条"
-registry_id: gsk-cn-genai-art7
+registry_id: reg-cn-genai
 snapshot_ref: "snapshots/gsk-cn-genai-art7.md#art7"
 first_seen: 2026-10-31T00:00:00-04:00
-fingerprint: "minhash96:000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001"
+fingerprint: "minhash96:79b64ec94fd3ea742d65872c5ddbcf7248d7ca9ef80ca261ef1fc5b002db47cc2ea6fa4825d6b4e1f7db5c08de17cfac"
 gap:
   - field: definition
     reason: "样例：概念字段待 W1 补"
@@ -140,7 +140,7 @@ gap:
     owner: "R-2 / 待指定"
     due: 2026-11-07
   - field: evidence_requirement
-    reason: "样例：证据要求待 W1 从第十九条监督检查范围补"
+    reason: "样例：证据要求待 W1 从 Art.14/17 监督检查范围推导"
     owner: "R-1 / 待指定"
     due: 2026-11-07
 

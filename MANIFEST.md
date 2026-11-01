@@ -1,18 +1,16 @@
-# 评审包文件清单（v0.2）
+# 评审包清单（v0.3）
 
-| 文件名 | 中文标题 | 必读 |
+| 文件 | 作用 | 必读 |
 |---|---|---|
-| 00-README.md | 评审包说明 | 是 |
-| 01-review-brief.md | CCC 评审说明（边界 / D1–D9 / 10 必答 / 输出格式） | 是 |
-| 02-design-v0.2.md | 设计 v0.2（被评对象） | 是 |
-| 03-contract-digest.md | 继承契约摘要 | 是 |
-| 04-approval-checklist.md | 用户批准清单 | 否 |
-| 05-pre-review-report.md | 预演评审报告（34 条） | 是 |
-| 06-pre-review-resolution.md | 预演发现处置表 | 是 |
+| 00-README.md | 说明 | 是 |
+| 01-review-brief.md | 评审协议 | 是 |
+| 02-design-v0.3.md | 被评对象 | 是 |
+| 03-contract-digest.md | 契约摘要 | 是 |
+| 04-approval-checklist.md | 批准清单 | 否 |
+| 05/06 | v0.1 预演报告 + 处置 | 是 |
+| 07/08 | v0.2 复审报告 + 处置（含 5 Block） | 是 |
 | attachments/05-source-map.md | 来源核实 | 按需 |
-| attachments/06-ku-plan.md | KU 拆分计划（52 条） | 是 |
-| attachments/07-sample-kus.md | 样例 KU 两份 | 是 |
-| attachments/rev4-ku-schema.md / rev4-wiki-schema.md | 上游契约全文 | 按需 |
-| attachments/08-defect-clustering.md | 上游缺陷聚类 | 按需 |
-| evidence/CH-C4-locator-check.txt | locator 52 条实跑证据 | 是 |
-| evidence/v0.2-design-check.txt | v0.2 一致性检查（36 PASS / 0 FAIL） | 是 |
+| attachments/06-ku-plan.md | KU 计划（52） | 是 |
+| attachments/07-sample-kus.md | 样例 KU | 是 |
+| attachments/rev4-*.md | 上游契约 | 按需 |
+| evidence/ | locator + v0.3 一致性检查 | 是 |
