@@ -1,47 +1,36 @@
-# 评审包说明（送给 CCC 之前先读这一页）
+# 评审包说明（v0.2 送 CCC）
 
 ## 包里有什么
 
 | 文件 | 作用 | 必读 |
 |---|---|---|
-| `01-CCC-评审说明.md` | **评审协议**：边界、D1–D9 维度、10 个必答问题、输出格式 | ✅ |
-| `02-设计-v0.1.md` | **被评对象**（唯一设计基线） | ✅ |
-| `03-继承契约摘要.md` | 29 字段 / CK / WS / DF / EX / log / refs 的摘要（核对继承是否失真） | ✅ |
-| `attachments/rev4-ku-schema.md` | 上游字段契约全文 | 按需 |
-| `attachments/rev4-wiki-schema.md` | 上游页面/校验契约全文 | 按需 |
-| `attachments/08-四轮缺陷聚类与流程改进建议.md` | 上游五轮评审的缺陷聚类与根因 | 按需（D8 用） |
-| `attachments/05-source-map.md` | 来源核实：版本/生效日/条款地图/抓取可行性 | 是（D1/D3） |
-| `attachments/06-ku-plan.md` | KU 拆分计划（53 条） | 是（D1） |
-| `attachments/07-sample-kus.md` | 样例 KU 两份（29 字段格式） | 是（D3） |
-| `SHA256SUMS.txt` | 包内文件校验 | — |
+| `01-review-brief.md` | **评审协议**：边界、D1–D9、10 必答问题、输出格式 | ✅ |
+| `02-design-v0.2.md` | **被评对象**（v0.2，已回应预演 34 条） | ✅ |
+| `03-contract-digest.md` | 29 字段 / CK / WS / DF / EX / 7 形态 locator 摘要 | ✅ |
+| `05-pre-review-report.md` | 预演评审报告（7 Block / 18 Major），**非 CCC 正式报告** | ✅ |
+| `06-pre-review-resolution.md` | 预演发现处置表（采纳/部分采纳/反驳） | ✅ |
+| `04-approval-checklist.md` | 用户批准清单（CCC 之后用） | 否 |
+| `attachments/05-source-map.md` | 来源核实：版本/生效日/条款地图/抓取可行性 | 按需 |
+| `attachments/06-ku-plan.md` | KU 拆分计划（52 条：EU 32 + CN 20） | 是 |
+| `attachments/07-sample-kus.md` | 样例 KU 两份（29 字段 + gap + 逐字义务） | 是 |
+| `attachments/rev4-ku-schema.md` / `rev4-wiki-schema.md` | 上游字段/页面契约全文 | 按需 |
+| `attachments/08-defect-clustering.md` | 上游五轮缺陷聚类与根因 | 按需（D8） |
 
-## 把包交给 CCC 的三种方式
+## CCC 侧操作（v0.2）
 
-### 方式 A（推荐）：上传 zip
-1. 打开 CCC 对话，附上整个 `grc-skill-agent-design-v0.1-ccc-review.zip`。
-2. 粘贴下面这段开场白（一句话版本）：
-   > 请先读包内 `00-评审包说明.md` 与 `01-CCC-评审说明.md`，然后严格按该说明评审 `02-设计-v0.1.md`。你只做评审，不写代码、不改文件；输出格式必须用评审说明 §6 的模板。
+1. 方式 A：在 CCC 新建 cloud session → 选仓库 `cxmail-git/grc-skill-agent-review` → **分支 `design-v0.2`**。
+2. 方式 B：直接上传 `grc-skill-agent-design-v0.2-ccc-review.zip`。
+3. 开场白：
+   > 请先读 `01-review-brief.md`，按该协议评审 `02-design-v0.2.md`。`05/06` 是预演评审及其处置表（非 CCC 正式报告）；请重点复核 v0.2 是否真的修好 F-01/F-02/F-03/F-04/F-05/F-06/F-07，并给出你自己的独立判定。你只做评审，不写代码、不改文件。
 
-### 方式 B：只能粘贴文本
-按顺序分 3 批发，每批发完等 CCC 说"继续"：
-1. `01-CCC-评审说明.md`
-2. `02-设计-v0.1.md`
-3. `03-继承契约摘要.md`
-> 附件（rev4 两份 schema、08 报告）若 CCC 需要再补；不补也可以评审，但 D3/D8 的结论会受限，让 CCC 标注"未核附件"。
+## 评审结束后
 
-### 方式 C：CCC 已连接私有 GitHub 仓库
-1. 告诉我（在会话里说"用仓库方式"），我把 `grc-skill-agent/` 初始化成 git 仓库，只提交 `docs/`（设计 + 评审包），给你一个私有仓库地址或 patch。
-2. CCC 从仓库读文件评审；**不要让它提交代码**。
+1. 把 CCC 报告原样存到 `docs/review/ccc-report.md`；
+2. 作者逐条处置（采纳/反驳+证据/转用户裁定）→ `ccc-findings-resolution.md`；
+3. 设计升 v0.3（或直接 1.0），交用户按 `04-approval-checklist.md` 批准；
+4. 批准后 W1-0（契约干跑）→ 修 N-11 → scaffold。
 
-## CCC 返回后怎么办
+## 注意
 
-1. 把 CCC 的完整报告原样存到 `docs/review/ccc-report.md`（不要编辑、不要删减）。
-2. 我逐条处置：采纳 / 反驳（必须给证据）/ 需用户裁定，产出 `docs/review/ccc-findings-resolution.md`，设计升 **v0.2**。
-3. 你对照 `docs/review/approval-checklist.md` 做最终 **approve / conditional / reject**。
-4. 批准后才进入实现（W1 第一件事：修 rev4 遗留 N-11，再 scaffold）。
-
-## 三条注意事项
-
-- **CCC 是评审人，不是实现者**：如果它开始写代码/改设计，用 `01-CCC-评审说明.md` §2 的边界把它拉回来。
-- **不要给 CCC 看我的自评**：本包刻意不含作者的定级与辩护，避免锚定。
-- **报告必须可复核**：每条发现要有位置（§号）+ 依据；"建议进一步明确"这类话按 Pending 处理，不算通过。
+- 本包**不含作者的推荐/定级**；`05/06` 是上一轮独立预演的记录，供你核对"修没修"，不构成你的结论。
+- 每条发现必须带位置（§）+ 判据/反例 + 修法；"已修"不算证据，要给可复跑判据。

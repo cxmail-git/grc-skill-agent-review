@@ -1,7 +1,7 @@
 # CCC 独立设计评审 · 评审说明（v0.1）
 
-> 评审对象：`GRC Skill Agent · 设计 v0.1`
-> 评审人：Claude Code Cloud（独立第三方）｜ 评审日期：____ ｜ 评审轮次：第 1 轮
+> 评审对象：`GRC Skill Agent · 设计 v0.2`
+> 评审人：Claude Code Cloud（独立第三方）｜ 评审日期：____ ｜ 评审轮次：第 2 轮（v0.2）
 > **你只做评审，不写代码、不改被评文件、不替作者做设计决策。**
 
 ---
@@ -16,16 +16,17 @@
 
 | # | 文件 | 用途 |
 |---|---|---|
-| 1 | `specs/2026-10-31-grc-skill-agent-design-v0.1.md` | **被评对象**（唯一设计基线） |
-| 2 | `review/contract-digest.md` | 继承契约摘要（29 字段 / CK-01~13 / WS / DF / EX / 页面 / log / refs） |
+| 1 | `02-design-v0.2.md` | **被评对象**（v0.2 = v0.1 + 预演处置） |
+| 2 | `03-contract-digest.md` | 继承契约摘要（29 字段 / CK-01~13 / WS / DF / EX / 7 形态 locator） |
 | 3 | `review/attachments/rev4-ku-schema.md` | 上游字段契约全文（核对摘要是否失真时用） |
 | 4 | `review/attachments/rev4-wiki-schema.md` | 上游页面/校验契约全文（同上） |
 | 5 | `review/attachments/08-四轮缺陷聚类与流程改进建议.md` | 上游五轮评审的缺陷聚类与根因（判断"历史病是否真被治"时用） |
-| 6 | `attachments/05-source-map.md`（仓库内 `docs/research/source-map.md`） | 来源核实备忘：版本/生效日/条款地图/抓取可行性（D1/D3 用） |
-| 7 | `attachments/06-ku-plan.md` | KU 拆分计划：53 条（EU 33 + CN 20），验证 50 KU 可行性（D1） |
-| 8 | `attachments/07-sample-kus.md` | 两份完整样例 KU（29 字段 + CN locator 第 6 形态）（D3） |
+| 6 | `attachments/05-source-map.md` | 来源核实备忘：版本/生效日/条款地图/抓取可行性（D1/D3） |
+| 7 | `attachments/06-ku-plan.md` | KU 拆分计划：52 条（EU 32 + CN 20），单 locator（D1/D3） |
+| 8 | `attachments/07-sample-kus.md` | 两份完整样例 KU（29 字段 + gap + 逐字义务）（D3） |
+| 9 | `05-pre-review-report.md` / `06-pre-review-resolution.md` | 预演评审 34 条及处置表（非 CCC 正式报告；用于核对 v0.2 修没修） |
 
-**阅读顺序**：设计 → 契约摘要 →（按需）附件。附件很长，只在需要核对具体规则时查。
+**阅读顺序**：设计 → 契约摘要 → 预演报告/处置表 →（按需）附件。**v0.2 复审重点**：locator 7 形态是否闭合、claim+prose 双轨能否执行、CK-03 状态机是否可审计、impact CI 是否按 change_id、determine 是否覆盖 applies_later、52 KU 与 20 金标是否自洽。
 
 ---
 

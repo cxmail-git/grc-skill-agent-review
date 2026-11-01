@@ -16,7 +16,7 @@
 
 **关键约束**：
 - `instrument_type` 11 值闭合：`statute` `regulation` `executive_order` `binding_guidance` `nonbinding_guidance` `voluntary_framework` `management_system_standard` `certification_scheme` `vendor_standard` `industry_standard` `advisory`；`instrument_is_binding` 必须与该表 binding 列一致。
-- `locator` 5 形态（条款式 / 罗马或数字章节式 / 命名章节式 / 页码式 / 条目式），禁止混写；细化信息进 `snapshot_ref` 锚点。**本设计增第 6 形态「中国条款式」`第X条`** `[改]`。
+- `locator` 5 形态（条款式 / 罗马或数字章节式 / 命名章节式 / 页码式 / 条目式），禁止混写；细化信息进 `snapshot_ref` 锚点。**本设计扩为 7 形态**：条款式（允字母项）、中国条款式（含款/项）、附件式 `[改]`。
 - `gap` 是登记对象**不是第 30 个字段**（4 键：field/reason/owner/due）；`owner` 用 `R-* / 实名` 两段式。
 - 概念字段（`definition`/`scope_in`/`scope_out`/`common_misreadings`）：被 concept 页引用时必填，缺失即 `status: draft`。
 - `confidence: low` → `status: draft`。
@@ -83,9 +83,11 @@
 
 | # | 变更 | 影响 | 需要评审回答 |
 |---|---|---|---|
-| C1 | 快照只存摘录+链接，不存全文 | CK-03 三态；答案公示核验模式 | "可审计"是否被降级？最小修法？ |
-| C2 | 作答语言 = 用户/指定语言；原文不译 | 答案对象增 `language`；译文单列 | 结构是否可表达？ |
-| C3 | 三张非 KU 表 | 检索/判定 | 是否污染契约？谁保证不承载事实？ |
+| C1 | 快照只存摘录+链接，不存全文 | CK-03 状态机（pending/online/manual/expired）；答案公示核验模式 | "可审计"是否被降级？最小修法？ |
+| C2 | 作答语言 = 用户/指定语言；原文不译 | `language` + `translations` + claim `binding_mode` | 结构是否可表达？ |
+| C3 | 四张非 KU 表（catalog/rules/profiles/scope_exclusions） | 检索/判定/否定句 | 是否污染契约？谁保证不承载事实？ |
+| C4 | locator 7 形态 | CK-01 | 是否闭合？区间如何处理？ |
+| C5 | claim+prose 双轨 | binder | 是否可执行？归纳/否定/译文如何绑定？ |
 | C4 | N-11 修复 | CK-11/CK-09 | 修法是否足够？ |
 
 ---
