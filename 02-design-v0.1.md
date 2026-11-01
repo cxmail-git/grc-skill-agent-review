@@ -1,6 +1,7 @@
 # GRC Skill Agent · 设计 v0.1（送 CCC 评审）
 
 > 状态：**草案，待独立评审（CCC）→ 用户批准** ｜ 日期：2026-10-31 ｜ 项目：grc-skill-agent
+> 自检：已完成 spec 自检（9 处内部不一致已修，记录见 `docs/review/spec-self-review.md`），此后版本为送审版。
 > 上游依据：本项目继承 `ai-grc-kb-v2-p0-rev4` 的知识契约（下称 rev4），并吸收 `08-四轮缺陷聚类与流程改进建议.md` 的五条根因与 P-1~P-7。
 > 与其它项目关系：**独立仓库、独立命名空间；与 GovernAI / AI-GRC-Consultant 零文件共享、零术语借用**。
 > 本文是唯一设计基线；评审意见按 §13 流程处置后升 v0.2。
@@ -47,6 +48,8 @@ rev1→rev4 五轮把一个"法条 → KU → 派生页 → 校验"的可审计�
 
 合规结论/风险评分/法律意见；自动爬虫与定时 watcher；Web UI / HTTP 服务；多租户与鉴权；跨法域对比页；向量检索；自动撰写叙事段（永久排除）；对来源全文的再分发。
 
+**来源级排除（明确不在 50 KU 内）**：EU AI Act 的 GPAI 章（Art.53–55）、罚则（Art.99）、附件 IV–XIII 细则、成员国转化立法；中国《算法推荐管理规定》《深度合成规定》（只收《标识办法》）；执法案例与处罚决定。
+
 ---
 
 ## 2. 用户与场景
@@ -85,8 +88,8 @@ rev1→rev4 五轮把一个"法条 → KU → 派生页 → 校验"的可审计�
 
 | 类别 | 内容 |
 |---|---|
-| 知识 | EU ~30 KU + CN ~20 KU；六类页面中实际生产 concept / entity / overview / topic / source 五类（comparison 保留不用） |
-| 能力 | MCP 六工具：`search_kus` `get_ku` `get_page` `ask` `determine` `freshness`；CLI `grc` 同名子命令 |
+| 知识 | EU ~30 KU（Art.2 适用范围、Art.5 禁止、Art.6+Annex III 分类、Art.8–15 义务链、Art.16/43 合格评定、Art.26/27 部署者、Art.50 透明度、Art.113 时间线）+ CN ~20 KU（暂行办法按条 + 标识办法）；六类页面实际生产 concept/entity/overview/topic/source 五类（comparison 保留不用） |
+| 能力 | MCP 六工具（只读）：`search_kus` `get_ku` `get_page` `ask` `determine` `freshness`；CLI `grc` 另有 `ingest/validate/compile/impact/publish/verify-source`（写操作不对 Agent 暴露） |
 | 更新 | registry + 摘录快照 + fingerprint + impact 矩阵 + log.md/refs.json + 人审签署 |
 | 分发 | `skills/grc-agent/SKILL.md`（DSH 与 Claude Code 共用体）+ Codex `AGENTS.md` 适配说明 |
 | 评估 | 20 金标 + 5 拒答负例 + 10 判定用例 + 变更传导脚本；`grc eval` 一条命令跑完 |
@@ -121,8 +124,9 @@ KU YAML（29 字段，gsk-*）── validate（CK-01~13）── compile ──
                     grc_core（Python，确定性）
                           │
               ┌───────────┴────────────┐
-         grc_mcp（stdio）            grc CLI
-      search/get/ask/determine/freshness/impact
+         grc_mcp（stdio，只读）      grc CLI（运维/写操作）
+   search/get_ku/get_page/ask/       ingest/validate/compile/
+   determine/freshness               impact/publish/verify-source
               │
    DSH SKILL.md · Claude Code SKILL.md · Codex AGENTS.md
 ```
@@ -143,6 +147,24 @@ KU YAML（29 字段，gsk-*）── validate（CK-01~13）── compile ──
 | `grc_core.eval` | 金标/负例/判定/传导 | 全部 | ✅ CI |
 
 **硬边界**：MCP 与 CLI 不复制业务逻辑；skill 不复制规则，只编排；核心包零第三方运行时依赖（MCP 用标准库手写 JSON-RPC stdio），保证离线可跑、跨宿主可装。
+
+**索引**：ASCII 按词、CJK 按**字符二元组（bigram）**，标题与 catalog 别名加权；不引入第三方分词。
+
+### 4.2.1 MCP 工具契约（MVP）
+
+| 工具 | 入参 | 出参 | 主要错误 |
+|---|---|---|---|
+| `search_kus` | `{query, jurisdiction?, doc_type?, top_k=5}` | `{hits:[{ku_id,title,jurisdiction,locator,snippet,score}]}` | `INVALID_INPUT` |
+| `get_ku` | `{ku_id}` | `{ku: 完整 YAML}` | `NOT_FOUND` |
+| `get_page` | `{slug}` | `{markdown, front_matter}` | `NOT_FOUND` |
+| `ask` | `{query, language?, jurisdiction?, no_llm?}` | 见 §7.1 | `NO_KU` / `OUT_OF_SCOPE` / `INVALID_INPUT` |
+| `determine` | `{profile}` | 见 §8.2 | `INVALID_INPUT` / `INSUFFICIENT_PROFILE` |
+| `freshness` | `{ku_ids?}` | `{oldest_as_of, expired_ku_ids, verification}` | `NOT_FOUND` |
+
+
+**MCP 协议面**：仅实现 `initialize` / `tools/list` / `tools/call` / 标准错误对象；不实现 resources、prompts、sampling（MVP 不需要，列入 v0.2）。
+
+**边界**：`impact` 是运维动作，**只在 CLI**（`grc impact`），不通过 MCP 暴露给 Agent —— 最小权限，Agent 不能触发写操作。
 
 ### 4.3 跨平台策略
 
@@ -167,25 +189,26 @@ KU YAML（29 字段，gsk-*）── validate（CK-01~13）── compile ──
 
 | # | 变更 | 理由 | 影响 |
 |---|---|---|---|
-| **C1** | 快照只存**摘录片段 + 原文链接 + accessed_at + excerpt_hash**，不存全文 | 不重分发全文；满足"可追溯"而非"可再分发" | CK-03 从"摘录必须在快照中逐字命中"改为两模式（见 §5.3）；答案必须公示核验模式 |
+| **C1** | 快照只存**摘录片段 + 原文链接 + accessed_at + excerpt_hash**，不存全文 | 不重分发全文；满足"可追溯"而非"可再分发" | CK-03 从"摘录必须在快照中逐字命中"改为两模式（见 §5.3）；答案必须公示核验模式。**这 4 项元数据不新增 KU 字段**，落在 registry 条目与快照文件头 |
 | **C2** | 答案语言 = 用户语言或指定语言；原文引用恒为原文 | 用户要求 | 答案对象增 `language`；译文单列并标注 |
 | **C3** | 新增三张**非 KU** 表：`catalog.yaml`（主题/别名→ku_id）、`rules/applicability-{eu,cn}.yaml`（适用性规则）、`kb/profiles/`（判定画像样例） | 检索与判定所需，不污染 29 字段契约 | CK-09 字段集校验不涉及它们；新增 lint 保证"非 KU 表不承载事实" |
 
 ### 5.3 CK-03 的两模式（C1 的直接后果）
 
-```yaml
-verbatim_excerpt: "High-risk AI systems shall be designed and developed in such a way that they can be effectively overseen by natural persons..."
-source_url: "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32024R1689"
-snapshot_ref: "snapshots/eu-ai-act-art14.md#excerpt"
-excerpt_hash: "sha256:…"           # 对 excerpt 规范化后计算
-accessed_at: "2026-10-31"
-verification: "online"              # online | offline | expired
-```
+**元数据放在哪（避免第 30 个字段）**：
 
-- **online**：`grc verify-source <ku_id>` 拉取 source_url，验证 excerpt 为原文连续子串 → CK-03 PASS，写入 `verified_at`。
-- **offline**：仅校验 excerpt 与 excerpt_hash 一致（自洽）；CK-03 记 `PASS(offline)`，答案显示"未在线核验（as_of=…）"。
+| 位置 | 存放 | 说明 |
+|---|---|---|
+| KU 文件 | 仅 29 字段；`verbatim_excerpt` 必须与快照摘录逐字相等 | KU 侧是镜像，不是第二事实源 |
+| `snapshots/<id>.md` 文件头 | `source_url` / `accessed_at` / `excerpt_hash` / `verification` / `verified_at` | 摘录原文的唯一存放处 |
+| `registry.yaml` 条目 | 同名字段 + `source_class` / `tier` / `status` | 来源级状态 |
+
+- `excerpt_hash = sha256(normalize(摘录原文))`；`normalize` = 去行尾空白 → 空白折叠 → UTF-8。
+- **单一事实源**：摘录原文只存快照文件；KU 的 `verbatim_excerpt` 是它的镜像。CK-03 第一项校验二者逐字相等（防 v1 的"同一事实两处"），第二项校验 `excerpt_hash` 自洽。
+- **online**：`grc verify-source <ku_id>` 拉取 `source_url` → 验证摘录为原文连续子串 → 写 `verification: online` + `verified_at`。
+- **offline**：只做"KU↔快照相等 + excerpt_hash 自洽" → `PASS(offline)`；答案显示"未在线核验（as_of=…）"。
 - **expired**：超过 `freshness.max_age_days`（默认 90）未在线核验 → 答案降级为 `partial` 并提示可能过期。
-- **限制（已知并接受）**：离线模式无法发现上游改版；MVP 用"人工定期 `grc verify-source --all` + CI 周检"缓解，不声称自动追踪。
+- **已知限制**：离线模式无法发现上游改版；MVP 用 `grc verify-source --all`（手动触发 / CI 周检）缓解，不声称自动追踪。
 
 ### 5.4 目录与命名
 
@@ -209,6 +232,25 @@ grc-skill-agent/
 ├── docs/{specs,adr,review}
 └── tests/
 ```
+
+**registry.yaml 条目（最小）**：
+
+```yaml
+- id: reg-eu-ai-act
+  title: "Regulation (EU) 2024/1689"
+  issuer: "European Parliament and Council"
+  jurisdiction: EU
+  source_class: primary
+  tier: A
+  source_url: "https://eur-lex.europa.eu/..."
+  snapshot_ref: "snapshots/eu-ai-act.md"
+  accessed_at: 2026-10-31
+  excerpt_hash: "sha256:…"
+  verification: online
+  status: published
+```
+
+**catalog.yaml（检索索引，不承载事实）**：`topics: {high-risk: [gsk-…], prohibited: […]}`、`aliases: {…}`。只允许 `ku_id` 与标签；出现义务性句子即 lint 失败（`NON_KU_FACT`）。
 
 ---
 
@@ -251,6 +293,7 @@ CI 检查：变更文件集 ⊆ 矩阵中申报的文件集，否则 `IMPACT_UNR
 {
   "mode": "answer|partial|refuse",
   "language": "zh",
+  "translations": [],
   "answer": "……",
   "claims": [
     {"span": "……", "ku_ids": ["gsk-eu-art14-oversight"], "locator": "Art.14(1)",
@@ -268,6 +311,8 @@ CI 检查：变更文件集 ⊆ 矩阵中申报的文件集，否则 `IMPACT_UNR
 }
 ```
 
+`translations` 仅在用户要求译文时出现：`[{"lang":"en","text":"…","source":"machine"}]`；`citations[].verbatim` 永不翻译。
+
 ### 7.2 六条硬规则
 
 1. **无据不成句**：每个 claim 必须绑定 ≥1 KU；绑定失败 → 删句；删后答案不成立 → `refuse`。
@@ -281,7 +326,7 @@ CI 检查：变更文件集 ⊆ 矩阵中申报的文件集，否则 `IMPACT_UNR
 
 - **抽取优先**：先由 core 从 KU/页面检索出候选 claim 片段（原文/义务条目/定义），答案骨架由模板生成；
 - **LLM 仅做两件事**：意图解析（问题→检索参数/画像槽位）与措辞（在已绑定 claim 上改写，不得引入新事实）；
-- **后校验**：`answer_binder` 校验每条 claim 的 span 是否可在对应 KU 字段中找到、实体/数字/日期是否一致；不一致即回退到抽取式答案；
+- **后校验**：`answer_binder` 校验每条 claim 的 span 是否为对应 KU 字段的**连续子串**，且实体/数字/日期逐字一致；不一致即删句，删后不成立则回退抽取式答案；binder 失败计入 `eval` 的 `unsupported_claims`；
 - **可关**：`--no-llm` 模式完全抽取式（CI 与离线演示用）。
 
 ---
@@ -319,6 +364,8 @@ org:
  "disclaimer": "本判定仅基于所收录来源与所提供画像，不构成法律意见；最终适用性以监管解释/司法认定为准。"}
 ```
 
+**义务清单的来源**：`obligations` 只能取自该 KU 的 `obligation` 字段（按 `applies_to.subject` 过滤），不得由 LLM 归纳；一条归纳句必须拆成多条 claim，各自绑定。
+
 ### 8.3 规则引擎
 
 - 每条适用性规则是 YAML：`id / ku_ids / jurisdiction / applies_when（字段-运算符-值）/ obligations_from（KU 字段路径）/ priority / exceptions`；
@@ -340,7 +387,7 @@ org:
 ### 9.1 金标集（20 题）
 
 结构：`id / 问题 / 期望 mode / 期望 citation ku_ids / 期望拒答理由 / 禁出现内容（如"合规""必须"误用）`。
-覆盖：EU 10 / CN 10；事实 6、义务 5、范围 4、跨条 2、拒答 3（含厂商宣称、超范围、法律意见）。
+覆盖：EU 10 / CN 10；事实 6、义务 5、范围 4、跨条 2、拒答 3（含厂商宣称、超范围、法律意见）。**金标在 W1 结束前冻结**（打 tag），W2 只增不改。
 
 ### 9.2 指标（CI 门禁）
 
@@ -386,6 +433,8 @@ org:
 | R6 | 继承 rev4 的遗留缺陷（N-11） | log.md 校验悬空 | W1 第一件事：修 N-11（CK-11/CK-09 承接 log.md）再开工 |
 | R7 | 版权/许可 | 无法再分发或被迫删除 | 只存摘录 + 链接；署名；不内置付费标准全文；README 声明 |
 | R8 | 规则与 KU 双轨导致"修而不回灌" | 重演 rev4 五轮返工 | 影响面矩阵 + 反向探针 + CI 拦截（P-2/P-4） |
+| R9 | 来源文本里的提示注入（"忽略以上指令"） | 被检索内容当指令执行 | 检索结果一律视为数据、不进入系统提示；skill 只通过工具取数，不执行来源内指令 |
+| R10 | 查询日志泄露商业信息 | 隐私/合规 | MVP 默认不落盘；`--log` 显式开启且只记 query hash + 命中 ku_ids |
 
 ---
 
@@ -411,31 +460,33 @@ org:
 
 | # | 域 | 问题 | 期望 |
 |---|---|---|---|
-| 1 | EU | 高风险 AI 系统提供者在投放前有哪些义务？ | answer；Art.16/43/11 等 citation |
+| 1 | EU | 高风险 AI 系统提供者在投放前有哪些义务？ | answer；Art.16 + 8–15 + 43 |
 | 2 | EU | 什么情况下系统会被归为高风险？ | answer；Art.6 + Annex III |
 | 3 | EU | 哪些 AI 实践被禁止？ | answer；Art.5 |
-| 4 | EU | 通用目的 AI 模型的义务适用于我们吗？ | refuse/out_of_scope（未收录 GPAI 章） |
+| 4 | EU | 通用目的 AI 模型的义务适用于我们吗？ | refuse(no_ku)：GPAI 章不在收录范围 |
 | 5 | EU | 部署者的日志保存义务是什么？ | answer；Art.26 |
-| 6 | EU | 高风险系统的上市后监测要求？ | answer；Art.72（若未收录则 refuse） |
-| 7 | EU | 2026 年 8 月后高风险义务是否生效？ | answer + 时间线 |
-| 8 | EU | 我们是非欧盟提供者，条例适用吗？ | answer/insufficient（Art.2 域外） |
-| 9 | EU | ISO 42001 认证是法定要求吗？ | refuse/纠正（非法规） |
-| 10 | EU | 你能帮我判断我们合不合规吗？ | refuse(not_legal_advice) |
-| 11 | CN | 生成式 AI 服务提供者的内容标识义务？ | answer；标识办法 |
+| 6 | EU | 技术文档要包含什么？ | answer；Art.11 |
+| 7 | EU | 高风险义务从什么时候开始适用？ | answer；Art.113 + effective_date |
+| 8 | EU | 我们是非欧盟提供者，条例适用吗？ | answer；Art.2 |
+| 9 | EU | ISO 42001 认证是法定要求吗？ | refuse/纠正：库中无法规要求；不得把标准写成义务 |
+| 10 | EU | 你能帮我们判断合不合规吗？ | refuse(not_legal_advice) |
+| 11 | CN | 生成式 AI 服务提供者的内容标识义务？ | answer；标识办法（显式/隐式） |
 | 12 | CN | 哪些内容属于禁止生成？ | answer；暂行办法 |
-| 13 | CN | 训练数据有哪些要求？ | answer |
-| 14 | CN | 面向企业内部使用是否适用？ | insufficient/answer（按画像） |
-| 15 | CN | 备案要求适用于谁？ | answer/refuse（未收录备案章则拒答） |
-| 16 | CN | 境外公司向境内提供服务是否适用？ | answer/insufficient |
-| 17 | CN | 厂商说"必须通过某认证"是法规吗？ | refuse/纠正 |
-| 18 | CN | 处罚金额是多少？ | refuse（未收录罚则） |
-| 19 | 跨 | 欧盟和中国对生成内容标识的要求一样吗？ | partial（不做对比页，但可分别列） |
-| 20 | 跨 | 给我一份合规整改清单 | refuse（不做合规结论） |
+| 13 | CN | 训练数据有哪些要求？ | answer；暂行办法 |
+| 14 | CN | 面向企业内部使用是否适用？ | insufficient（缺画像）或按 Art.2 回答 |
+| 15 | CN | 备案与安全评估的要求适用于谁？ | answer；暂行办法 |
+| 16 | CN | 境外公司向境内公众提供服务是否适用？ | answer/insufficient；Art.2 |
+| 17 | CN | 厂商说"必须通过某认证"是法规吗？ | refuse/纠正：厂商标准≠法规 |
+| 18 | CN | 违反规定有什么法律责任？ | answer；暂行办法法律责任条 |
+| 19 | CN/EU | 欧盟和中国对生成内容标识的要求分别是什么？ | partial：两组分别列，**不做对比分析** |
+| 20 | 通用 | 给我一份合规整改清单 | refuse(not_legal_advice) |
+
+> 第 19 题不是"对比页"功能，只是同一问题下两域分别作答；对比分析明确不在 MVP。
 
 ## 附录 B · 50 KU 取摄清单（草案）
 
-**EU AI Act（~30）**：Art.5(1) 禁止实践（按项拆 6–8 KU）；Art.6 + Annex III 高风险分类（5–6）；Art.8–15 提供者义务链（8–10，按条拆）；Art.16/43 合格评定与 CE（2–3）；Art.26 部署者义务（3–4）；Art.27 FRIA（1–2）；Art.50 透明度（2–3）；Art.2 适用范围（1）。
-**CN（~20）**：《生成式人工智能服务管理暂行办法》按条拆 12–14 KU；《人工智能生成合成内容标识办法》6–8 KU（显式/隐式标识、平台责任、用户提示）。
+**EU AI Act（30±3）**：Art.5(1) 禁止实践（6–8 KU）；Art.6 + Annex III 高风险分类（5–6）；Art.8–15 提供者义务链（8–10）；Art.16/43 合格评定与 CE（2–3）；Art.26 部署者义务（3–4）；Art.27 FRIA（1–2）；Art.50 透明度（2–3）；Art.113 时间线（1）；Art.2 适用范围（1）。
+**CN（~20）**：《生成式人工智能服务管理暂行办法》按条拆 14–16 KU（含备案/安全评估、法律责任各 1 条）；《人工智能生成合成内容标识办法》6–8 KU（显式/隐式标识、平台责任、用户提示）。
 
 > 取摄以"能覆盖 20 金标 + 五类场景"为准；逐条清单在 W1 冻结时落 `kb/registry.yaml`。
 
