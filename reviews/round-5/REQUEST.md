@@ -4,8 +4,10 @@
 
 - design: `v0.5`
 - branch: `design-v0.5`
-- design_sha256: `a92939d2f2a860550de2bd95ad791e29853669fe1c3b421dc6f8d4a49c53333d`
-- package_sha256: `1c3210d1ccce4222abbb9b0bc74c792e1a709c012044d92231ba8a13a9494f1a`
+- design_sha256: `c763b8eb2c50e43c27c9e26ddc5666c97e33e0c869ac3ec3d91af02dbc931ab7`
+- package_sha256: `e0562258ce11fdd0f438a4286b41dcf1dc9b0e6a3be3e4e843d468a2779ba6de`
 - 重点：B-01/B-02/B-03 是否真关闭；determine 是否清零；金标 #19 groups / coverage_note / 32 KU 分项和
 - 报告路径：push 分支 `review/round-5` 的 `reviews/round-5/report.md` + `report.yaml`；或 Issue 评论
 - 只写 `reviews/round-5/**`
+
+> 修正：本文件曾写旧 commit 的 hash（a92939d2/1c3210d1）；以 Issue #3 评论与当前分支 commit 的 c763b8eb/e0562258 为准（CCC Round-5 已指出）。
