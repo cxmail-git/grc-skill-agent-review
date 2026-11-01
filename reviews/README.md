@@ -29,7 +29,7 @@
 1. CCC 只能写 `reviews/round-N/**`；CI 检查 `git diff --name-only` 越界即失败（`REVIEW_WRITE_OUT_OF_SCOPE`）。
 2. 报告与 `REQUEST.md` 的三个 hash 不一致 → `REVIEW_STALE`，作废重审。
 3. 报告文件只增不改；处置写 `resolution.md`，不改报告。
-4. 没有 `report.yaml` 时，Issue 评论也算有效（人读），但 DSH 处置时补机器摘要。
+4. 没有 `report.yaml` 时，Issue 评论也算有效（人读），但**评论必须以 `# CCC Review Report` 开头**（或含 `总裁定` / `verdict:`），否则视为作者评论、不进入归档；DSH 处置时补机器摘要。
 5. 评审会话 ID 只作参考，不是同步通道。
 
 ## 传输回退
