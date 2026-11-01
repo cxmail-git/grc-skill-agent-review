@@ -3,6 +3,7 @@
 > 用途：为设计 v0.1 的"50 KU 取摄"提供**可核实的来源事实**（版本 / 生效日 / 条款清单 / 抓取可行性）。
 > 方法：官方页面下载 + 文本抽取（本地脚本）+ 欧盟 AI Act Service Desk 条文页核对；**所有 URL 与日期均为 2026-10-31 实测**。
 > 本文件是研究备忘，不是 KU；W1 冻结时转为 `kb/registry.yaml` 与 `kb/snapshots/*.md`。
+> **全文已落地**：`docs/research/sources/`（EU 17 篇 + Annex III + CN 两部；sha256 见 `sources/README.md`），W1-7 直接复制为 `kb/snapshots/`。CN 文本已去除 CJK 排版空格并验证样例 excerpt 为全文连续子串；EU 样例同样通过。
 
 ---
 
