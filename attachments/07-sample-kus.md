@@ -21,9 +21,9 @@ evidence_requirement: []
 applies_to:
   - {subject: provider, stage: develop, scope_type: system, scope_value: high-risk AI systems}
   - {subject: provider, stage: deploy, scope_type: system, scope_value: high-risk AI systems}
-status: draft
+status: transition
 effective_date: 2027-12-02
-transition_note: null
+transition_note: "Annex III: 2027-12-02；Annex I: 2028-08-02（按 Art.113 合并版）"
 verbatim_excerpt: "High-risk AI systems shall be designed and developed in such a way, including with appropriate human-machine interface tools, that they can be effectively overseen by natural persons during the period in which they are in use."
 definition: null
 scope_in: null

@@ -18,23 +18,28 @@ PASS docs/research/sample-kus/gsk-cn-genai-art7.yaml: fingerprint not shared pla
 PASS design marker: 7 形态
 PASS design marker: sentence_map
 PASS design marker: validate_answer
+PASS design marker: evidence_quote
+PASS design marker: answer_id
+PASS design marker: host-simulate
 PASS design marker: 全文快照
+PASS design marker: verification_mode
+PASS design marker: freshness
 PASS design marker: PyYAML
 PASS design marker: UNVERIFIED
 PASS design marker: determine 推迟
-PASS design marker: binding_mode
-PASS design marker: support_type
-PASS design marker: change_id
-PASS design marker: required_updates
-PASS design marker: scope_correction
-PASS design marker: scope_exclusion_id
+PASS design marker: backlog
+PASS design marker: P-n
+PASS design marker: groups
 PASS design marker: CK-14
 PASS design marker: CK-15
 PASS design marker: 评估
+PASS design stale: 只存摘录
+PASS design stale: 不重分发全文
+PASS design stale: determination.yaml
+PASS design stale: determination.md
+PASS design stale: Art.5 选 5 项
+PASS design stale: insufficient_profile
 PASS design stale: 零第三方运行时依赖
-PASS design stale: 适用性五态判定
-PASS design stale: determine 10 用例
-PASS design stale: MCP 六工具（只读）：`search_kus` `get_ku` `get_page` `ask` `determine`
 PASS sections 1.1-1.4 present
 PASS answer field "claims"
 PASS answer field "binding_mode"
@@ -45,8 +50,9 @@ PASS answer field "partial_reason"
 PASS answer field groups
 PASS answer field scope_correction
 PASS evidence exists: evidence/CH-C4-locator-check.txt
-PASS evidence exists: evidence/v0.3-design-check.txt
-PASS evidence exists: evidence/v0.3-design-check.txt
-PASS evidence exists: evidence/v0.3-design-check.txt
+PASS evidence exists: evidence/v0.4-design-check.txt
+PASS evidence exists: evidence/v0.4-design-check.txt
+PASS evidence exists: evidence/v0.4-design-check.txt
+PASS evidence exists: evidence/v0.4-design-check.txt
 
-RESULT: PASS  (49 pass / 0 fail)
+RESULT: PASS  (55 pass / 0 fail)

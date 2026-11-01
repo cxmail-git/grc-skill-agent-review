@@ -83,11 +83,11 @@
 
 | # | 变更 | 影响 | 需要评审回答 |
 |---|---|---|---|
-| C1 | 快照只存摘录+链接，不存全文 | CK-03 状态机（pending/online/manual/expired）；答案公示核验模式 | "可审计"是否被降级？最小修法？ |
+| C1 | **Tier A 全文快照** + 每 KU `verification.yaml`；`verification_mode` × `freshness` 两轴 | CK-03 全文子串/定位；发布标 UNVERIFIED | 版权/单人核验风险 |
 | C2 | 作答语言 = 用户/指定语言；原文不译 | `language` + `translations` + claim `binding_mode` | 结构是否可表达？ |
-| C3 | 四张非 KU 表（catalog/rules/profiles/scope_exclusions） | 检索/判定/否定句 | 是否污染契约？谁保证不承载事实？ |
+| C3 | 非 KU 表：catalog + scope_exclusions（rules/profiles 随 determine 推迟） | 检索/否定句 | 是否污染契约？ |
 | C4 | locator 7 形态 | CK-01 | 是否闭合？区间如何处理？ |
-| C5 | claim+prose 双轨 | binder | 是否可执行？归纳/否定/译文如何绑定？ |
+| C5 | claim + sentence_map + **宿主成文 + validate_answer**（answer_id/evidence_quote/数字/否定/mode） | 句内容校验 | 宿主跳过校验风险 |
 | C4 | N-11 修复 | CK-11/CK-09 | 修法是否足够？ |
 
 ---

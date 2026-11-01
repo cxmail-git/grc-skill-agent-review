@@ -1,6 +1,6 @@
 # CCC 独立设计评审 · 评审说明（v0.1）
 
-> 评审对象：`GRC Skill Agent · 设计 v0.4`
+> 评审对象：`GRC Skill Agent · 设计 v0.5`
 > 评审人：Claude Code Cloud（独立第三方）｜ 评审日期：____ ｜ 评审轮次：第 3 轮（v0.3）
 > **你只做评审，不写代码、不改被评文件、不替作者做设计决策。**
 
@@ -16,7 +16,7 @@
 
 | # | 文件 | 用途 |
 |---|---|---|
-| 1 | `02-design-v0.4.md` | **被评对象**（v0.4 = v0.3 + CCC v0.1 处置 + 用户 5 项裁定） |
+| 1 | `02-design-v0.5.md` | **被评对象**（v0.5 = v0.4 + 定向复核 3 Block 修复） |
 | 2 | `03-contract-digest.md` | 继承契约摘要（29 字段 / CK-01~13 / WS / DF / EX / 7 形态 locator） |
 | 3 | `review/attachments/rev4-ku-schema.md` | 上游字段契约全文（核对摘要是否失真时用） |
 | 4 | `review/attachments/rev4-wiki-schema.md` | 上游页面/校验契约全文（同上） |
@@ -27,7 +27,7 @@
 | 9 | `05-pre-review-v01-report.md` / `06-pre-review-v01-resolution.md` | v0.1 预演 34 条及处置 |
 | 10 | `07-pre-review-v02-report.md` / `08-pre-review-v02-resolution.md` | v0.2 复审 5 Block / 22 条及处置（尤其 F-07 判据方向） |
 
-**阅读顺序**：设计 → 契约摘要 → 预演报告/处置表 →（按需）附件。**v0.4 复审重点**：① determine 推迟后，G1/G2/G4/G5 是否仍成立；② 全文快照 + `verification.yaml` + `UNVERIFIED` 是否可审计；③ 宿主成文 + `validate_answer` 是否真能守住 citation；④ PyYAML 依赖与离线可跑；⑤ CCC v0.1 报告中 F-03/F-09/F-10/F-11/F-12/F-13/F-16/F-18/F-19/F-20/F-21/F-22/F-23 哪些已真正关闭；⑥ 结论用词是否统一为"评估"。
+**阅读顺序**：设计 → 契约摘要 → 预演报告/处置表 →（按需）附件。**v0.5 复审重点**：① 全文快照口径是否全文一致（无"只存摘录"残留）；② `validate_answer` 是否真的校验**句内容**（evidence_quote/数字/实体/否定/mode 重算）；③ 宿主跳过校验是否可检测（answer_id + host-simulate + 指标）；④ determine 是否彻底移出且 backlog 清晰；⑤ 金标 #19 `groups`、`coverage_note`、32 KU 分项和；⑥ PyYAML 安装/离线路径。
 
 ---
 
