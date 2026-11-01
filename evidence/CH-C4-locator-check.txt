@@ -1,0 +1,4 @@
+command: python3 evidence/check-locators.py (inline)
+rows=52 eu=32 cn=20
+locator FAIL=0
+RESULT: PASS

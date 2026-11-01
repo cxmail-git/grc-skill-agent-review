@@ -14,3 +14,5 @@
 | attachments/07-sample-kus.md | 样例 KU 两份 | 是 |
 | attachments/rev4-ku-schema.md / rev4-wiki-schema.md | 上游契约全文 | 按需 |
 | attachments/08-defect-clustering.md | 上游缺陷聚类 | 按需 |
+| evidence/CH-C4-locator-check.txt | locator 52 条实跑证据 | 是 |
+| evidence/v0.2-design-check.txt | v0.2 一致性检查（36 PASS / 0 FAIL） | 是 |

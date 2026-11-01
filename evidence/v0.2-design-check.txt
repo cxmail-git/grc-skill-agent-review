@@ -1,0 +1,39 @@
+== design check ==
+PASS ku-plan rows=52 eu=32 cn=20
+PASS ku_id unique
+PASS locator all match 7 forms
+PASS docs/research/sample-kus/gsk-eu-art14.yaml: 29 fields
+PASS docs/research/sample-kus/gsk-eu-art14.yaml: obligations substring
+PASS docs/research/sample-kus/gsk-eu-art14.yaml: gap/status ok
+PASS docs/research/sample-kus/gsk-eu-art14.yaml: locator Art.14(1)
+PASS docs/research/sample-kus/gsk-cn-genai-art7.yaml: 29 fields
+PASS docs/research/sample-kus/gsk-cn-genai-art7.yaml: obligations substring
+PASS docs/research/sample-kus/gsk-cn-genai-art7.yaml: gap/status ok
+PASS docs/research/sample-kus/gsk-cn-genai-art7.yaml: locator 第七条
+PASS design marker: 7 形态
+PASS design marker: binding_mode
+PASS design marker: support_type
+PASS design marker: applies_later
+PASS design marker: applies_from
+PASS design marker: change_id
+PASS design marker: scope_correction
+PASS design marker: partial_reason
+PASS design marker: claim + prose
+PASS design marker: scope_exclusions
+PASS design stale: 三处变更
+PASS design stale: 约 30 KU
+PASS design stale: EU 33 + CN 20 = 53
+PASS design stale: 第 6 形态
+PASS design stale: 两模式
+PASS sections 1.1-1.4 present
+PASS answer field "claims"
+PASS answer field "binding_mode"
+PASS answer field "support_type"
+PASS answer field "verification_url"
+PASS answer field "verified_by"
+PASS answer field "partial_reason"
+PASS answer field groups
+PASS answer field scope_correction
+PASS evidence exists: evidence/CH-C4-locator-check.txt
+
+RESULT: PASS  (36 pass / 0 fail)
