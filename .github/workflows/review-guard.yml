@@ -1,0 +1,17 @@
+name: review-guard
+on:
+  push:
+    branches: ["review/round-*"]
+jobs:
+  only-review-files:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - name: diff must be reviews/round-N/report.md|yaml only
+        run: |
+          base=$(git merge-base HEAD origin/main)
+          changed=$(git diff --name-only "$base" HEAD || true)
+          echo "$changed"
+          bad=$(echo "$changed" | grep -vE '^reviews/round-[0-9]+/(report\.md|report\.yaml)$' || true)
+          if [ -n "$bad" ]; then echo "REVIEW_WRITE_OUT_OF_SCOPE: $bad"; exit 1; fi
