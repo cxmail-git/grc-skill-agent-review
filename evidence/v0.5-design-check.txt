@@ -33,6 +33,10 @@ PASS design marker: groups
 PASS design marker: CK-14
 PASS design marker: CK-15
 PASS design marker: 评估
+PASS design marker: Art.5 选 7 项
+PASS design marker: = **32**
+PASS design marker: expected_facts
+PASS design marker: coverage_note
 PASS design stale: 只存摘录
 PASS design stale: 不重分发全文
 PASS design stale: determination.yaml
@@ -40,6 +44,8 @@ PASS design stale: determination.md
 PASS design stale: Art.5 选 5 项
 PASS design stale: insufficient_profile
 PASS design stale: 零第三方运行时依赖
+PASS design stale: sanctions
+PASS design stale: v0.4 决定
 PASS sections 1.1-1.4 present
 PASS answer field "claims"
 PASS answer field "binding_mode"
@@ -55,4 +61,4 @@ PASS evidence exists: evidence/v0.4-design-check.txt
 PASS evidence exists: evidence/v0.4-design-check.txt
 PASS evidence exists: evidence/v0.4-design-check.txt
 
-RESULT: PASS  (55 pass / 0 fail)
+RESULT: PASS  (61 pass / 0 fail)
