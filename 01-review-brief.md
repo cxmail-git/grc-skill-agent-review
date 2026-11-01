@@ -22,6 +22,8 @@
 | 4 | `review/attachments/rev4-wiki-schema.md` | 上游页面/校验契约全文（同上） |
 | 5 | `review/attachments/08-四轮缺陷聚类与流程改进建议.md` | 上游五轮评审的缺陷聚类与根因（判断"历史病是否真被治"时用） |
 | 6 | `attachments/05-source-map.md`（仓库内 `docs/research/source-map.md`） | 来源核实备忘：版本/生效日/条款地图/抓取可行性（D1/D3 用） |
+| 7 | `attachments/06-ku-plan.md` | KU 拆分计划：53 条（EU 33 + CN 20），验证 50 KU 可行性（D1） |
+| 8 | `attachments/07-sample-kus.md` | 两份完整样例 KU（29 字段 + CN locator 第 6 形态）（D3） |
 
 **阅读顺序**：设计 → 契约摘要 →（按需）附件。附件很长，只在需要核对具体规则时查。
 

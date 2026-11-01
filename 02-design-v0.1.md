@@ -38,7 +38,8 @@ rev1→rev4 五轮把一个"法条 → KU → 派生页 → 校验"的可审计�
 
 - **EU**：`Regulation (EU) 2024/1689`，采用 **consolidated as at 2026-07-27**（含 Digital Omnibus on AI，OJ L 2026/01744）。高风险义务适用日按合并版为 **2027-12-02（Annex III）/ 2028-08-02（Annex I）**，不是原版的 2026-08-02。
 - **CN**：《生成式人工智能服务管理暂行办法》（2023-08-15 施行，24 条）；《人工智能生成合成内容标识办法》（2025-09-01 施行，14 条）。
-- 逐条核对、条款地图与抓取可行性见 `docs/research/source-map.md`（附录 D 摘要）。
+- **CN 定位**：CN 法规以"第 X 条"定位，rev4 的 5 形态无法表达 → 本设计新增第 6 形态（C4）。
+- 条款地图、KU 拆分计划与抓取可行性见 `docs/research/source-map.md`、`eu-article-map.md`、`cn-article-map.md`、`ku-plan.md`（附录 D/E 摘要）。
 
 ### 1.2 目标（可验收）
 
@@ -198,6 +199,7 @@ KU YAML（29 字段，gsk-*）── validate（CK-01~13）── compile ──
 | **C1** | 快照只存**摘录片段 + 原文链接 + accessed_at + excerpt_hash**，不存全文 | 不重分发全文；满足"可追溯"而非"可再分发" | CK-03 从"摘录必须在快照中逐字命中"改为**四态**（online / manual / offline / expired，见 §5.3）；答案必须公示核验模式。**这 4 项元数据不新增 KU 字段**，落在 registry 条目与快照文件头 |
 | **C2** | 答案语言 = 用户语言或指定语言；原文引用恒为原文 | 用户要求 | 答案对象增 `language`；译文单列并标注 |
 | **C3** | 新增三张**非 KU** 表：`catalog.yaml`（主题/别名→ku_id）、`rules/applicability-{eu,cn}.yaml`（适用性规则）、`kb/profiles/`（判定画像样例） | 检索与判定所需，不污染 29 字段契约 | CK-09 字段集校验不涉及它们；新增 lint 保证"非 KU 表不承载事实" |
+| **C4** | `locator` 增第 6 形态「中国条款式」：`^第[一二三四五六七八九十百零〇\d]+条(之[一二三四五六七八九十])?$`（款/项以 `snapshot_ref` 锚点表达） | rev4 的 5 形态是欧盟中心；CN 法规的"第七条"无法表达 | CK-01 对 CN KU 的 locator 校验；CK-03 沿用锚点；样例见附录 E |
 
 ### 5.3 CK-03 的四态（C1 的直接后果）
 
@@ -511,6 +513,7 @@ org:
 | 非 KU 表 | 无 | catalog/rules/profiles | 检索与判定（C3） |
 | 冲突判定 | CK-13 人工 | 同左 + 规则冲突不择一 | 保持保守 |
 | log.md 校验 | 悬空（N-11） | 修入 CK-11/CK-09 | 继承时修复 |
+| locator 形态 | 5 形态（欧盟中心） | **6 形态**（+ 中国条款式） | CN 法规定位（C4） |
 
 ## 附录 D · 来源核实摘要（详见 `docs/research/source-map.md`）
 
@@ -521,3 +524,11 @@ org:
 | CN 标识办法 | 2025-09-01，14 条 | 8 条入 KU | cac.gov.cn 可抓 | 6–8 |
 
 **已核实的关键事实**：EU 高风险义务适用日为 2027-12-02 / 2028-08-02（合并版 Art.113）；CN 暂行办法 Art.2 明确"未向境内公众提供服务的内部研发/使用不适用"；CN 标识办法定义显式/隐式标识并规定传播平台与分发平台义务。
+
+## 附录 E · KU 拆分计划与样例（W1 输入）
+
+- **拆分计划**：`docs/research/ku-plan.md` —— EU 33 + CN 20 = **53** 条，含 `ku_id` / `locator` / 标题 / `obligation_nature` 初判 / W1 抄录位置；每条在 W1 按 29 字段填充并做 Tier A 核验。
+- **样例**：`docs/research/sample-kus/`
+  - `gsk-eu-art14.yaml`：EU Art.14(1) 人工监督（Art.113 合并版适用日 **2027-12-02**）；
+  - `gsk-cn-genai-art7.yaml`：CN 暂行办法第七条训练数据（`locator: 第七条`，验证 C4 第 6 形态）。
+- 两份样例均已用 29 字段全量填写，用于检验：字段是否够用、`locator` 是否能表达 CN、`verbatim_excerpt` 是否可逐字落盘。

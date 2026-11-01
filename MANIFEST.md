@@ -11,5 +11,7 @@
 | attachments/rev4-wiki-schema.md | 上游页面/校验契约全文 | 按需 |
 | attachments/08-defect-clustering.md | 上游五轮缺陷聚类与根因 | 按需（D8） |
 | attachments/05-source-map.md | 来源核实备忘（版本/生效日/条款地图/抓取可行性） | 是（D1/D3） |
+| attachments/06-ku-plan.md | KU 拆分计划（53 条：EU 33 + CN 20） | 是（D1） |
+| attachments/07-sample-kus.md | 样例 KU 两份（29 字段 + CN locator 第 6 形态） | 是（D3） |
 
 > 文件名用 ASCII 仅为跨平台解压稳定；正文均为中文。

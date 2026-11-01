@@ -16,7 +16,7 @@
 
 **关键约束**：
 - `instrument_type` 11 值闭合：`statute` `regulation` `executive_order` `binding_guidance` `nonbinding_guidance` `voluntary_framework` `management_system_standard` `certification_scheme` `vendor_standard` `industry_standard` `advisory`；`instrument_is_binding` 必须与该表 binding 列一致。
-- `locator` 5 形态（条款式 / 罗马或数字章节式 / 命名章节式 / 页码式 / 条目式），禁止混写；细化信息进 `snapshot_ref` 锚点。
+- `locator` 5 形态（条款式 / 罗马或数字章节式 / 命名章节式 / 页码式 / 条目式），禁止混写；细化信息进 `snapshot_ref` 锚点。**本设计增第 6 形态「中国条款式」`第X条`** `[改]`。
 - `gap` 是登记对象**不是第 30 个字段**（4 键：field/reason/owner/due）；`owner` 用 `R-* / 实名` 两段式。
 - 概念字段（`definition`/`scope_in`/`scope_out`/`common_misreadings`）：被 concept 页引用时必填，缺失即 `status: draft`。
 - `confidence: low` → `status: draft`。
