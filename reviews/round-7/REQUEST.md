@@ -4,8 +4,8 @@
 
 - design: `v0.7`
 - branch: `design-v0.7`
-- design_sha256: `044dd3e6d1e8e94d710665da7d8fdaab6ee84df512a43bb675442c326f9d1eb7`
-- package_sha256: `1ee7f9bd740cb578e912b71726f7d8d6f652661221888e2fdd506ac7e21c7def`
+- design_sha256: `e8f9b6f53ce526a3ac4ec54db7d8767e5eeaa5150323ae18478aa2e82ff20623`
+- package_sha256: `2bd36127203665c8506763784ee64fb0b42becaf7b2b4b53bc73f61ade7548b3`
 - 重点：V6-01 9 项落字（V5-04/05/06/07/12/15/16/18/21）；候选句 required/order；server_nonce token；结论词模式；scope_note vs coverage；CK-14 absence_kind；CK-03 执行环境
 - 报告：push `review/round-7` 的 report.md+report.yaml，或 Issue #5 评论
 - 只写 `reviews/round-7/**`

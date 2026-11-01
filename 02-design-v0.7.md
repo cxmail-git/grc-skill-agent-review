@@ -481,6 +481,8 @@ evidence:
 
 **覆盖与模式（V6-06）**：`scope_note_codes`（范围说明，如 #8/#14/#16）**不改变 mode**；`coverage_codes`（库内缺口，如 #1/#2/#3/#6）→ `partial(coverage_gap)`；`groups>1` → `partial(cross_jurisdiction)`；冲突 → `partial(conflict)`；refusal 判定顺序：`not_legal_advice` > `scope_correction` > `out_of_scope` > `no_ku` > 正常作答；`expired` 任一 KU → `partial(coverage_gap)` + 警告；`unverified` 仅在答案中加警告，不改变 mode。`coverage_note` 由 core 从 `coverage_codes` 生成，不手写计数。
 
+**意图规则（V5-12 / V6-07）**：core 用**闭合关键词/句式表**识别 `not_legal_advice`：`合不合规|算不算违规|是否违法|能不能做|整改清单|告我|法律责任|我们会怎样`（zh）与 `are we compliant|is it legal|can we do|remediation list|liability`（en）。命中 → `refuse(not_legal_advice)`，不进入候选句生成。`--no-llm` 的含义：禁用可选的模型意图解析，仅用该规则表；宿主仍只能选句。
+
 **对账（V6-04/15）**：`issued_vs_validated = 100%`（未校验 0，二选一写死）；`grc audit-answers` 检查签发但未校验；answer 状态存 `var/answers/<id>.json`（R10 例外：仅 claim id + 候选句 hash + 展示 hash，不存查询原文）；并发用文件锁。
 
 ### 7.4.1 新增校验：CK-14 / CK-15
