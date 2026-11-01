@@ -19,12 +19,8 @@ obligation:
     modality: obligation
 evidence_requirement: []
 applies_to:
-  - subject: provider
-    stage: develop
-    scope: high-risk AI systems
-  - subject: provider
-    stage: deploy
-    scope: high-risk AI systems
+  - {subject: provider, stage: develop, scope_type: system, scope_value: high-risk AI systems}
+  - {subject: provider, stage: deploy, scope_type: system, scope_value: high-risk AI systems}
 status: draft
 effective_date: 2027-12-02
 transition_note: null
@@ -74,7 +70,7 @@ gap:
 # 样例 KU（格式演示；status=draft，不参与发布门禁）
 # v0.2 修正：obligation 文本均为 excerpt 连续子串；概念字段与 evidence 用 gap 登记；locator 用第 6 形态
 ku_id: gsk-cn-genai-art7
-title: "第七条 — 训练数据处理"
+title: "第七条"
 source_id: reg-cn-genai
 jurisdiction: CN
 instrument_type: regulation
@@ -103,9 +99,7 @@ obligation:
     modality: obligation
 evidence_requirement: []
 applies_to:
-  - subject: provider
-    stage: develop
-    scope: 向境内公众提供生成式人工智能服务的组织、个人
+  - {subject: provider, stage: develop, scope_type: use_case, scope_value: 向境内公众提供生成式人工智能服务的组织、个人}
 status: draft
 effective_date: 2023-08-15
 transition_note: null

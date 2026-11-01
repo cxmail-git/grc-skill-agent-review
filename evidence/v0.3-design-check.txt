@@ -45,5 +45,8 @@ PASS answer field "partial_reason"
 PASS answer field groups
 PASS answer field scope_correction
 PASS evidence exists: evidence/CH-C4-locator-check.txt
+PASS evidence exists: evidence/v0.3-design-check.txt
+PASS evidence exists: evidence/v0.3-design-check.txt
+PASS evidence exists: evidence/v0.3-design-check.txt
 
-RESULT: PASS  (46 pass / 0 fail)
+RESULT: PASS  (49 pass / 0 fail)

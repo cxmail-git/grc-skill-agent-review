@@ -34,7 +34,7 @@
 | 24 | gsk-eu-art16 | Art.16 | 提供者义务清单 | obligation |
 | 25 | gsk-eu-art26-1 | Art.26(1) | 部署者：按说明使用 | obligation |
 | 26 | gsk-eu-art26-2 | Art.26(2) | 部署者：指派人工监督 | obligation |
-| 27 | gsk-eu-art26-5 | Art.26(5) | 部署者：日志保存 | obligation |
+| 27 | gsk-eu-art26-5 | Art.26(6) | 部署者：日志保存 | obligation |
 | 28 | gsk-eu-art27 | Art.27 | 基本权利影响评估 | obligation |
 | 29 | gsk-eu-art50-1 | Art.50(1) | 与自然人交互的披露 | obligation |
 | 30 | gsk-eu-art50-2 | Art.50(2) | 合成内容标识 | obligation |

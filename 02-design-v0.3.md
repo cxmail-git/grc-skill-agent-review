@@ -169,14 +169,14 @@ KU YAML（29 字段，gsk-*）── validate（CK-01~13）── compile ──
 | `get_page` | `{slug}` | `{markdown, front_matter}` | `NOT_FOUND` |
 | `ask` | `{query, language?, jurisdiction?, profile?, no_llm?}` | 见 §7.1 | `NO_KU` / `OUT_OF_SCOPE` / `INSUFFICIENT_PROFILE` / `INVALID_INPUT` |
 | `determine` | `{profile}` | 见 §8.2 | `INVALID_INPUT` / `INSUFFICIENT_PROFILE` |
-| `freshness` | `{ku_ids?}` | `{oldest_as_of, expired_ku_ids, verification}` | `NOT_FOUND` |
+| `freshness` | `{ku_ids?}` | `{oldest_verified_at, expired_ku_ids, verification}` | `NOT_FOUND` |
 
 
 **MCP 协议面**：仅实现 `initialize` / `tools/list` / `tools/call` / 标准错误对象；不实现 resources、prompts、sampling（MVP 不需要，列入 v0.2）。
 
 **边界**：`impact` 是运维动作，**只在 CLI**（`grc impact`），不通过 MCP 暴露给 Agent —— 最小权限，Agent 不能触发写操作。
 
-**协议测试（6 条，预演 F-34）**：① 握手 `initialize` 版本协商；② 未知工具 `NOT_FOUND`；③ 参数非法 `INVALID_INPUT`；④ 业务失败（`NO_KU`）结构化返回而非协议错误；⑤ 大响应（>64KB）分块/截断策略；⑥ 并发 2 连接不串话。
+**协议测试（6 条，预演 F-34）**：① 握手 `initialize` 版本协商（`protocolVersion: "2025-06-18"`，失败回退最近支持版本并记录）；② 未知工具 `NOT_FOUND`；③ 参数非法 `INVALID_INPUT`；④ 业务失败（`NO_KU`）走 `result.isError=true` + 业务 code，不占 JSON-RPC 错误码（-326xx）；⑤ 大响应 >64KB 时返回 `truncated:true` + `next_cursor`（不静默截断）；⑥ 并发按 request id 隔离，2 连接不共享状态。
 
 ### 4.3 跨平台策略
 
@@ -197,6 +197,16 @@ KU YAML（29 字段，gsk-*）── validate（CK-01~13）── compile ──
 - **13 条校验** CK-01~13；WS-01~09；DF-1~6 / DF-4b / DF-4c 与 EX-1~7；front-matter 8 键；`log.md` 4 列；`refs.json` 4 键。**v0.3 新增 CK-14（absence 依据）与 CK-15（核验来源）**，见 §7.4。
 - **08 根因对策**：P-1 数字/命名生成化；P-2 变更影响面矩阵；P-3 规则四要素（判定主体/输入/闭合值域/错误码）；P-4 探针正反基线；P-5 证据 lint。
 - **页面侧引文**（预演 F-P1）：页面只渲染 `verbatim_excerpt` 的派生块；WS-03 增子项"块内引文必须是 excerpt 连续子串"；不得在正文另写引文。
+- **v0.3 闭合值域（导入时补 4 张表，F-13）**：
+
+| 字段 | 闭合值 |
+|---|---|
+| `modality` | `obligation` / `prohibition` / `right` / `definition` |
+| `subject` | `provider` / `deployer` / `importer` / `distributor` / `user` / `public_authority` |
+| `frequency` | `once` / `per_placing_on_market` / `per_use` / `annual` / `on_request` / `continuous` |
+| `scope_type` | `system` / `use_case` / `role` / `territory` / `organisation` |
+
+`applies_to[]` 统一为 `{subject, stage, scope_type, scope_value, note?}`；`evidence_requirement[].frequency` 取上表。
 
 ### 5.2 六处变更（v0.3；需 CCC 重点挑战）
 
@@ -488,7 +498,7 @@ judgements:                              # 定性判断由用户自答（N-09/F-
   "listed_obligations_from_source": [{"ku_id":"…","locator":"…","text":"…","basis":"…"}],
   "coverage_note": "本库未收录 Art.43 合格评定细则。",
   "missing_fields": ["system.domains"],
-  "citations": ["复用 §7.1 citations[]"],
+  "citations": [{"ku_id":"…","locator":"…","verbatim":"…","verification":"manual","verified_by":"R-2 / 张三"}],
   "freshness": {"oldest_verified_at":"2026-10-31","expired_ku_ids":[]},
   "as_of": "2026-10-31",
   "verification": "manual",
