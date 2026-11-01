@@ -19,7 +19,7 @@
 **三个关键设计取舍**：
 1. **判定是"适用性"不是"合规性"**：三态（适用/不适用/信息不足）+ 义务清单 + 免责，判定由确定性规则引擎执行，LLM 不参与判定。
 2. **答案先抽取后措辞**：断言必须绑定 KU + locator + 原文；绑定失败即删句，删完不成立即拒答；LLM 只做意图解析与措辞。
-3. **快照只存摘录 + 链接**：不重分发全文；CK-03 改为"在线核验 / 离线自证"两模式，答案显式标注核验模式与访问时间。
+3. **快照只存摘录 + 链接**：不重分发全文；CK-03 改为四态（online / manual / offline / expired），答案显式标注核验模式、核验人与访问时间。
 
 ---
 
@@ -199,14 +199,14 @@ KU YAML（29 字段，gsk-*）── validate（CK-01~13）── compile ──
 | **C2** | 答案语言 = 用户语言或指定语言；原文引用恒为原文 | 用户要求 | 答案对象增 `language`；译文单列并标注 |
 | **C3** | 新增三张**非 KU** 表：`catalog.yaml`（主题/别名→ku_id）、`rules/applicability-{eu,cn}.yaml`（适用性规则）、`kb/profiles/`（判定画像样例） | 检索与判定所需，不污染 29 字段契约 | CK-09 字段集校验不涉及它们；新增 lint 保证"非 KU 表不承载事实" |
 
-### 5.3 CK-03 的两模式（C1 的直接后果）
+### 5.3 CK-03 的四态（C1 的直接后果）
 
 **元数据放在哪（避免第 30 个字段）**：
 
 | 位置 | 存放 | 说明 |
 |---|---|---|
 | KU 文件 | 仅 29 字段；`verbatim_excerpt` 必须与快照摘录逐字相等 | KU 侧是镜像，不是第二事实源 |
-| `snapshots/<id>.md` 文件头 | `source_url` / `accessed_at` / `excerpt_hash` / `verification` / `verified_at` | 摘录原文的唯一存放处 |
+| `snapshots/<id>.md` 文件头 | `source_url` / `accessed_at` / `excerpt_hash` / `verification` / `verified_at` / `verified_by` | 摘录原文的唯一存放处 |
 | `registry.yaml` 条目 | 同名字段 + `source_class` / `tier` / `status` | 来源级状态 |
 
 - `excerpt_hash = sha256(normalize(摘录原文))`；`normalize` = 去行尾空白 → 空白折叠 → UTF-8。
@@ -253,7 +253,8 @@ grc-skill-agent/
   snapshot_ref: "snapshots/eu-ai-act.md"
   accessed_at: 2026-10-31
   excerpt_hash: "sha256:…"
-  verification: online
+  verification: manual
+  verified_by: "R-2 / 张三"
   status: published
 ```
 
@@ -328,7 +329,7 @@ CI 检查：变更文件集 ⊆ 矩阵中申报的文件集，否则 `IMPACT_UNR
 3. **冲突不消解**：未登记冲突 → 列双方，`mode=partial`；已登记 open 冲突 → 提示 `CFL-*`。
 4. **来源分层**：`vendor`/`analyst` 不得支撑义务性断言；`tier C` 不得作事实源。
 5. **不做法律意见**：合规结论、执法预测、责任判断一律拒绝并说明边界。
-6. **必带元信息**：`as_of`（最旧）、`verification`（online/offline/expired）、免责声明。
+6. **必带元信息**：`as_of`（最旧）、`verification`（online/manual/offline/expired）、`verified_by`（manual 时必填）、免责声明。
 
 ### 7.3 实现路线（防幻觉）
 
@@ -505,7 +506,7 @@ org:
 | 项 | rev4 | v0.1 | 原因 |
 |---|---|---|---|
 | 快照 | 全文快照 | 摘录 + 链接 + hash | 版权与体积（C1） |
-| CK-03 | 快照逐字命中 | online/offline/expired 三态 | C1 的后果 |
+| CK-03 | 快照逐字命中 | online/manual/offline/expired 四态 | C1 的后果；EUR-Lex 走 manual |
 | 语言 | 中文 | 用户语言/指定语言 | 用户要求（C2） |
 | 非 KU 表 | 无 | catalog/rules/profiles | 检索与判定（C3） |
 | 冲突判定 | CK-13 人工 | 同左 + 规则冲突不择一 | 保持保守 |
