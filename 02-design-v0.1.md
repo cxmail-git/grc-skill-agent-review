@@ -34,6 +34,12 @@ rev1→rev4 五轮把一个"法条 → KU → 派生页 → 校验"的可审计�
 
 本项目的目标就是把这份契约变成**能更新、能回答、能判定、能跨平台安装**的 Agent 能力。
 
+### 1.4 来源版本（2026-10-31 已核实）
+
+- **EU**：`Regulation (EU) 2024/1689`，采用 **consolidated as at 2026-07-27**（含 Digital Omnibus on AI，OJ L 2026/01744）。高风险义务适用日按合并版为 **2027-12-02（Annex III）/ 2028-08-02（Annex I）**，不是原版的 2026-08-02。
+- **CN**：《生成式人工智能服务管理暂行办法》（2023-08-15 施行，24 条）；《人工智能生成合成内容标识办法》（2025-09-01 施行，14 条）。
+- 逐条核对、条款地图与抓取可行性见 `docs/research/source-map.md`（附录 D 摘要）。
+
 ### 1.2 目标（可验收）
 
 | # | 目标 | 验收 |
@@ -189,7 +195,7 @@ KU YAML（29 字段，gsk-*）── validate（CK-01~13）── compile ──
 
 | # | 变更 | 理由 | 影响 |
 |---|---|---|---|
-| **C1** | 快照只存**摘录片段 + 原文链接 + accessed_at + excerpt_hash**，不存全文 | 不重分发全文；满足"可追溯"而非"可再分发" | CK-03 从"摘录必须在快照中逐字命中"改为两模式（见 §5.3）；答案必须公示核验模式。**这 4 项元数据不新增 KU 字段**，落在 registry 条目与快照文件头 |
+| **C1** | 快照只存**摘录片段 + 原文链接 + accessed_at + excerpt_hash**，不存全文 | 不重分发全文；满足"可追溯"而非"可再分发" | CK-03 从"摘录必须在快照中逐字命中"改为**四态**（online / manual / offline / expired，见 §5.3）；答案必须公示核验模式。**这 4 项元数据不新增 KU 字段**，落在 registry 条目与快照文件头 |
 | **C2** | 答案语言 = 用户语言或指定语言；原文引用恒为原文 | 用户要求 | 答案对象增 `language`；译文单列并标注 |
 | **C3** | 新增三张**非 KU** 表：`catalog.yaml`（主题/别名→ku_id）、`rules/applicability-{eu,cn}.yaml`（适用性规则）、`kb/profiles/`（判定画像样例） | 检索与判定所需，不污染 29 字段契约 | CK-09 字段集校验不涉及它们；新增 lint 保证"非 KU 表不承载事实" |
 
@@ -205,9 +211,10 @@ KU YAML（29 字段，gsk-*）── validate（CK-01~13）── compile ──
 
 - `excerpt_hash = sha256(normalize(摘录原文))`；`normalize` = 去行尾空白 → 空白折叠 → UTF-8。
 - **单一事实源**：摘录原文只存快照文件；KU 的 `verbatim_excerpt` 是它的镜像。CK-03 第一项校验二者逐字相等（防 v1 的"同一事实两处"），第二项校验 `excerpt_hash` 自洽。
-- **online**：`grc verify-source <ku_id>` 拉取 `source_url` → 验证摘录为原文连续子串 → 写 `verification: online` + `verified_at`。
-- **offline**：只做"KU↔快照相等 + excerpt_hash 自洽" → `PASS(offline)`；答案显示"未在线核验（as_of=…）"。
-- **expired**：超过 `freshness.max_age_days`（默认 90）未在线核验 → 答案降级为 `partial` 并提示可能过期。
+- **online**：脚本抓取 `source_url` 成功，且摘录为原文连续子串 → `verification: online` + `verified_at`。**仅对可稳定抓取的来源启用**（EUR-Lex 实测拒绝脚本抓取，见 source-map §6）。
+- **manual**：人工打开官方页面核对摘录，记录 `verified_by`（实名）+ `verified_at` + 截图或页面 hash → `verification: manual`。**MVP 默认模式**。
+- **offline**：只做"KU↔快照相等 + excerpt_hash 自洽" → `PASS(offline)`；答案显示"未核验（as_of=…）"。
+- **expired**：超过 `freshness.max_age_days`（默认 90）未核验 → 答案降级为 `partial` 并提示可能过期。
 - **已知限制**：离线模式无法发现上游改版；MVP 用 `grc verify-source --all`（手动触发 / CI 周检）缓解，不声称自动追踪。
 
 ### 5.4 目录与命名
@@ -276,7 +283,8 @@ CI 检查：变更文件集 ⊆ 矩阵中申报的文件集，否则 `IMPACT_UNR
 ### 6.3 演示脚本（验收用）
 
 ```
-1. 改 kb/ku/gsk-eu-art6-high-risk.yaml 的 effective_date / transition_note
+1. 改 `kb/ku/gsk-eu-art6-high-risk.yaml` 的 `effective_date` / `transition_note`
+   （演示素材：合并版 Art.113 → 2027-12-02；若误用原版 2026-08-02，改回即触发传导）
 2. grc impact → 输出受影响页（预计 2 页）+ 过期 KU + 需重编译对象；计时
 3. grc compile --changed && grc validate && grc publish
 4. grc ask "高风险系统什么时候开始适用？" → 答案日期与引用同步更新
@@ -297,12 +305,12 @@ CI 检查：变更文件集 ⊆ 矩阵中申报的文件集，否则 `IMPACT_UNR
   "answer": "……",
   "claims": [
     {"span": "……", "ku_ids": ["gsk-eu-art14-oversight"], "locator": "Art.14(1)",
-     "verbatim": "……", "as_of": "2026-10-31", "verification": "online"}
+     "verbatim": "……", "as_of": "2026-10-31", "verification": "manual"}
   ],
   "citations": [
     {"ku_id": "...", "title": "...", "source_class": "primary", "tier": "A",
      "jurisdiction": "EU", "locator": "Art.14(1)", "source_url": "https://...",
-     "accessed_at": "2026-10-31", "verification": "online"}
+     "accessed_at": "2026-10-31", "verification": "manual"}
   ],
   "freshness": {"oldest_as_of": "2026-10-31", "expired_ku_ids": []},
   "refusal": {"reason": "no_ku|out_of_scope|insufficient_profile|conflict_unresolved|not_legal_advice",
@@ -399,6 +407,7 @@ org:
 | citation 稳定性 | 同题两次结果一致 | 同题重跑 diff |
 | 判定正确率 | 10/10 判定用例 | `eval/determination.yaml` |
 | 变更传导 | impact 清单 = 期望集合；<5 分钟 | 计时脚本 |
+| 核验覆盖 | 100% KU 有 `verification` + `verified_at`/`verified_by` | `grc freshness` |
 | 契约校验 | CK 全绿、refs 对账 19→50 边 | validate |
 
 ### 9.3 探针纪律（P-4/P-5）
@@ -425,7 +434,7 @@ org:
 
 | # | 风险 | 影响 | 对策 |
 |---|---|---|---|
-| R1 | 摘录快照无法发现上游改版（C1 的代价） | 答案可能过期 | `verify-source` 在线核验 + CI 周检 + `expired` 降级 + 答案公示核验模式 |
+| R1 | 摘录快照无法发现上游改版（C1 的代价） | 答案可能过期 | 四态核验（online/manual/offline/expired）+ CI 周检 + 答案公示核验模式与 `verified_by`；EUR-Lex 走 manual |
 | R2 | 3 周内 50 KU 质量不达标 | 金标失败、返工 | W1 结束先冻结 EU 20；CN 允许 15–20 弹性；KU 模板化 + 双人核 |
 | R3 | 适用性判定被误读为法律意见 | 法律与声誉风险 | 三态 + 免责 + 不评分 + 只回放规则 + 输出统一加"非法律意见" |
 | R4 | LLM 引入幻觉 | 破坏"不造假"底线 | 抽取优先 + binder 后校验 + `--no-llm` 兜底 + 无据拒答 |
@@ -448,7 +457,7 @@ org:
 
 ## 13. 评审与批准流程（CCC）
 
-1. **送审包**：本文件 + `docs/review/CCC-review-brief.md` + `docs/review/contract-digest.md` + `docs/review/attachments/`（rev4 原契约、08 根因报告）。
+1. **送审包**：本文件 + `docs/review/CCC-review-brief.md` + `docs/review/contract-digest.md` + `docs/research/source-map.md` + `docs/review/attachments/`（rev4 原契约、08 根因报告）。
 2. **CCC 独立评审**：按 brief 的 D1–D9 维度与 10 个必答问题给判定（通过/有条件通过/不通过）+ 逐条发现（Block/Major/Minor + 证据 + 修法）。**CCC 不写代码、不改本文件**。
 3. **作者处置**：逐条采纳/反驳（反驳必须给证据），产出 `docs/review/ccc-findings-resolution.md`，设计升 v0.2。
 4. **用户批准**：用户对照 `docs/review/approval-checklist.md` 决定 approve / conditional / reject。
@@ -466,7 +475,7 @@ org:
 | 4 | EU | 通用目的 AI 模型的义务适用于我们吗？ | refuse(no_ku)：GPAI 章不在收录范围 |
 | 5 | EU | 部署者的日志保存义务是什么？ | answer；Art.26 |
 | 6 | EU | 技术文档要包含什么？ | answer；Art.11 |
-| 7 | EU | 高风险义务从什么时候开始适用？ | answer；Art.113 + effective_date |
+| 7 | EU | 高风险义务从什么时候开始适用？ | answer；Art.113（合并版：2027-12-02 / 2028-08-02）+ effective_date |
 | 8 | EU | 我们是非欧盟提供者，条例适用吗？ | answer；Art.2 |
 | 9 | EU | ISO 42001 认证是法定要求吗？ | refuse/纠正：库中无法规要求；不得把标准写成义务 |
 | 10 | EU | 你能帮我们判断合不合规吗？ | refuse(not_legal_advice) |
@@ -489,6 +498,7 @@ org:
 **CN（~20）**：《生成式人工智能服务管理暂行办法》按条拆 14–16 KU（含备案/安全评估、法律责任各 1 条）；《人工智能生成合成内容标识办法》6–8 KU（显式/隐式标识、平台责任、用户提示）。
 
 > 取摄以"能覆盖 20 金标 + 五类场景"为准；逐条清单在 W1 冻结时落 `kb/registry.yaml`。
+> **时间线口径**：EU 一律按合并版（2026-07-27）Art.113 —— 高风险 2027-12-02（Annex III）/ 2028-08-02（Annex I）；原版 2026-08-02 仅作演示对照。
 
 ## 附录 C · 继承契约差异表
 
@@ -500,3 +510,13 @@ org:
 | 非 KU 表 | 无 | catalog/rules/profiles | 检索与判定（C3） |
 | 冲突判定 | CK-13 人工 | 同左 + 规则冲突不择一 | 保持保守 |
 | log.md 校验 | 悬空（N-11） | 修入 CK-11/CK-09 | 继承时修复 |
+
+## 附录 D · 来源核实摘要（详见 `docs/research/source-map.md`）
+
+| 来源 | 版本 / 施行 | 条款规模 | 抓取可行性 | KU 计划 |
+|---|---|---|---|---|
+| EU AI Act | consolidated 2026-07-27（含 Digital Omnibus） | 选 10 个条款簇 + Annex III | EUR-Lex 拒绝脚本抓取 → manual 核验 | 30±3 |
+| CN 暂行办法 | 2023-08-15，24 条 | 14 条入 KU | gov.cn 可抓 | 14–16 |
+| CN 标识办法 | 2025-09-01，14 条 | 8 条入 KU | cac.gov.cn 可抓 | 6–8 |
+
+**已核实的关键事实**：EU 高风险义务适用日为 2027-12-02 / 2028-08-02（合并版 Art.113）；CN 暂行办法 Art.2 明确"未向境内公众提供服务的内部研发/使用不适用"；CN 标识办法定义显式/隐式标识并规定传播平台与分发平台义务。

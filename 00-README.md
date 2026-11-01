@@ -10,6 +10,7 @@
 | `attachments/rev4-ku-schema.md` | 上游字段契约全文 | 按需 |
 | `attachments/rev4-wiki-schema.md` | 上游页面/校验契约全文 | 按需 |
 | `attachments/08-四轮缺陷聚类与流程改进建议.md` | 上游五轮评审的缺陷聚类与根因 | 按需（D8 用） |
+| `attachments/05-source-map.md` | 来源核实：版本/生效日/条款地图/抓取可行性 | 是（D1/D3） |
 | `SHA256SUMS.txt` | 包内文件校验 | — |
 
 ## 把包交给 CCC 的三种方式

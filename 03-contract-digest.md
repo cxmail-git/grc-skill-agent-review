@@ -40,7 +40,7 @@
 |---|---|---|---|
 | CK-01 | 字段完备与取值域 | 29 字段必填/枚举；binding 一致性 | `INSUFFICIENT_INPUT` / `SCHEMA_VIOLATION` |
 | CK-02 | 措辞强度 | STR-01/02/03 + (source_class × obligation_nature) 矩阵 + 规避词 | `LANGUAGE_STRENGTH` / `CATEGORY_COLLAPSE` |
-| CK-03 | 原文一致性 | `verbatim_excerpt` 必须与来源逐字一致；**本设计改为 online/offline/expired 三态** `[改]` | `EXCERPT_MISMATCH` |
+| CK-03 | 原文一致性 | `verbatim_excerpt` 必须与来源逐字一致；**本设计改为 online/manual/offline/expired 四态** `[改]` | `EXCERPT_MISMATCH` |
 | CK-04 | 缺失登记 | 条件必填 null ⇒ gap 有对应项；gap 非空 ⇒ draft | `INSUFFICIENT_INPUT` |
 | CK-05 | 来源授权 | vendor/community/advisory 不得单独支撑义务页；tier C 不作事实源 | `FIELD_BLOCKED` |
 | CK-06 | 派生块封签 | 重算 render_hash | `HASH_MISMATCH` |
