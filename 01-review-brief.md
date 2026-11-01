@@ -1,6 +1,6 @@
 # CCC 独立设计评审 · 评审说明（v0.1）
 
-> 评审对象：`GRC Skill Agent · 设计 v0.3`
+> 评审对象：`GRC Skill Agent · 设计 v0.4`
 > 评审人：Claude Code Cloud（独立第三方）｜ 评审日期：____ ｜ 评审轮次：第 3 轮（v0.3）
 > **你只做评审，不写代码、不改被评文件、不替作者做设计决策。**
 
@@ -16,7 +16,7 @@
 
 | # | 文件 | 用途 |
 |---|---|---|
-| 1 | `02-design-v0.3.md` | **被评对象**（v0.3 = v0.1 + 两轮预演处置） |
+| 1 | `02-design-v0.4.md` | **被评对象**（v0.4 = v0.3 + CCC v0.1 处置 + 用户 5 项裁定） |
 | 2 | `03-contract-digest.md` | 继承契约摘要（29 字段 / CK-01~13 / WS / DF / EX / 7 形态 locator） |
 | 3 | `review/attachments/rev4-ku-schema.md` | 上游字段契约全文（核对摘要是否失真时用） |
 | 4 | `review/attachments/rev4-wiki-schema.md` | 上游页面/校验契约全文（同上） |
@@ -27,7 +27,7 @@
 | 9 | `05-pre-review-v01-report.md` / `06-pre-review-v01-resolution.md` | v0.1 预演 34 条及处置 |
 | 10 | `07-pre-review-v02-report.md` / `08-pre-review-v02-resolution.md` | v0.2 复审 5 Block / 22 条及处置（尤其 F-07 判据方向） |
 
-**阅读顺序**：设计 → 契约摘要 → 预演报告/处置表 →（按需）附件。**v0.3 复审重点**：① CI 是否真做到 `required_updates ⊆ actual_changed`（不是允许集）；② prose/translations 是否被 sentence_map 约束；③ absence 是否有 scope_exclusions + CK-14；④ CK-03 发布门禁是否校验四字段并重算过期；⑤ golden #1/#3/#7/#14 是否与 52 KU 库对齐；⑥ 52/32/20/7/5/13 是否全文一致。
+**阅读顺序**：设计 → 契约摘要 → 预演报告/处置表 →（按需）附件。**v0.4 复审重点**：① determine 推迟后，G1/G2/G4/G5 是否仍成立；② 全文快照 + `verification.yaml` + `UNVERIFIED` 是否可审计；③ 宿主成文 + `validate_answer` 是否真能守住 citation；④ PyYAML 依赖与离线可跑；⑤ CCC v0.1 报告中 F-03/F-09/F-10/F-11/F-12/F-13/F-16/F-18/F-19/F-20/F-21/F-22/F-23 哪些已真正关闭；⑥ 结论用词是否统一为"评估"。
 
 ---
 

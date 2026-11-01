@@ -17,24 +17,24 @@ PASS docs/research/sample-kus/gsk-cn-genai-art7.yaml: registry_id source-level
 PASS docs/research/sample-kus/gsk-cn-genai-art7.yaml: fingerprint not shared placeholder
 PASS design marker: 7 形态
 PASS design marker: sentence_map
+PASS design marker: validate_answer
+PASS design marker: 全文快照
+PASS design marker: PyYAML
+PASS design marker: UNVERIFIED
+PASS design marker: determine 推迟
 PASS design marker: binding_mode
 PASS design marker: support_type
-PASS design marker: applies_later
-PASS design marker: applies_from
 PASS design marker: change_id
 PASS design marker: required_updates
 PASS design marker: scope_correction
 PASS design marker: scope_exclusion_id
 PASS design marker: CK-14
 PASS design marker: CK-15
-PASS design marker: partial_reason
-PASS design marker: 五态
-PASS design stale: 三处变更
-PASS design stale: 约 30 KU
-PASS design stale: EU 33 + CN 20 = 53
-PASS design stale: 第 6 形态
-PASS design stale: 两模式
-PASS design stale: 50 KU
+PASS design marker: 评估
+PASS design stale: 零第三方运行时依赖
+PASS design stale: 适用性五态判定
+PASS design stale: determine 10 用例
+PASS design stale: MCP 六工具（只读）：`search_kus` `get_ku` `get_page` `ask` `determine`
 PASS sections 1.1-1.4 present
 PASS answer field "claims"
 PASS answer field "binding_mode"
