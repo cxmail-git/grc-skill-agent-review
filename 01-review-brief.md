@@ -1,6 +1,6 @@
 # CCC 独立设计评审 · 评审说明（v0.1）
 
-> 评审对象：`GRC Skill Agent · 设计 v0.6`
+> 评审对象：`GRC Skill Agent · 设计 v0.7`
 > 评审人：Claude Code Cloud（独立第三方）｜ 评审日期：____ ｜ 评审轮次：第 3 轮（v0.3）
 > **你只做评审，不写代码、不改被评文件、不替作者做设计决策。**
 
@@ -16,7 +16,7 @@
 
 | # | 文件 | 用途 |
 |---|---|---|
-| 1 | `02-design-v0.6.md` | **被评对象**（v0.6 = v0.5 + CCC Round-5 处置） |
+| 1 | `02-design-v0.7.md` | **被评对象**（v0.7 = v0.6 + CCC Round-6 处置） |
 | 2 | `03-contract-digest.md` | 继承契约摘要（29 字段 / CK-01~13 / WS / DF / EX / 7 形态 locator） |
 | 3 | `review/attachments/rev4-ku-schema.md` | 上游字段契约全文（核对摘要是否失真时用） |
 | 4 | `review/attachments/rev4-wiki-schema.md` | 上游页面/校验契约全文（同上） |
@@ -27,7 +27,7 @@
 | 9 | `05-pre-review-v01-report.md` / `06-pre-review-v01-resolution.md` | v0.1 预演 34 条及处置 |
 | 10 | `07-pre-review-v02-report.md` / `08-pre-review-v02-resolution.md` | v0.2 复审 5 Block / 22 条及处置（尤其 F-07 判据方向） |
 
-**阅读顺序**：设计 → 契约摘要 → 预演报告/处置表 →（按需）附件。**v0.6 复审重点**：① V5-01 是否真正只允许候选句（final_text 逐字拼接、无改写通道）；② V5-02 结论词表是否覆盖所有句子并可反例击穿；③ V5-03 签发/校验对账；④ V5-06 UNVERIFIED 字段；⑤ V5-09 absence_kind；⑥ V5-10 mode 函数与 20 金标期望；⑦ 快照不随包（V5-20 A）。
+**阅读顺序**：设计 → 契约摘要 → 预演报告/处置表 →（按需）附件。**v0.7 复审重点**：① V6-01 处置表 9 项是否在正文逐条落字（B-01 关闭条件）；② 候选句 required/order、final_text、server_nonce token；③ 结论词表按"主体词+结论词"模式；④ scope_note_codes vs coverage_codes；⑤ CK-14 absence_kind/absence_terms；⑥ CK-03 执行环境与快照不随包；⑦ 人日分项与 R2 单人核验。
 
 ---
 

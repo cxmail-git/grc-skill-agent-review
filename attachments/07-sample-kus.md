@@ -37,7 +37,7 @@ source_class_confidence: high
 as_of: 2026-10-31
 locator: "Art.14(1)"
 registry_id: reg-eu-ai-act
-snapshot_ref: "snapshots/gsk-eu-art14.md#p1"
+snapshot_ref: "snapshots/reg-eu-ai-act.md#art14-1"
 first_seen: 2026-10-31T00:00:00-04:00
 fingerprint: "minhash96:4c6ea475a7539db34ac421e73efc5f8fd7cb19e6096f79a80be8d625a6a1a7f7e46a1fd06331e9ec19cd6bbe0a8ecb2d"
 gap:

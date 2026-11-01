@@ -16,24 +16,24 @@ PASS docs/research/sample-kus/gsk-cn-genai-art7.yaml: locator 第七条
 PASS docs/research/sample-kus/gsk-cn-genai-art7.yaml: registry_id source-level
 PASS docs/research/sample-kus/gsk-cn-genai-art7.yaml: fingerprint not shared placeholder
 PASS design marker: 7 形态
-PASS design marker: 候选句
+PASS design marker: 只选句
 PASS design marker: final_text
 PASS design marker: validation_token
+PASS design marker: server_nonce
+PASS design marker: REQUIRED_SENTENCE
 PASS design marker: CONCLUSION_FORBIDDEN
+PASS design marker: conclusion_terms
 PASS design marker: issued_vs_validated
-PASS design marker: answer_id
-PASS design marker: host-simulate
 PASS design marker: 全文快照
 PASS design marker: 不随包
 PASS design marker: verification_mode
-PASS design marker: freshness
-PASS design marker: PyYAML
-PASS design marker: UNVERIFIED
+PASS design marker: verification_path
 PASS design marker: absence_kind
+PASS design marker: absence_terms
+PASS design marker: scope_note_codes
 PASS design marker: CK-16
 PASS design marker: coverage_codes
 PASS design marker: out_of_scope
-PASS design marker: determine 推迟
 PASS design marker: backlog
 PASS design marker: groups
 PASS design marker: CK-14
@@ -41,6 +41,7 @@ PASS design marker: CK-15
 PASS design marker: 评估
 PASS design marker: Art.5 选 7 项
 PASS design marker: = **32**
+PASS design marker: 16–19 人日
 PASS design stale: 只存摘录
 PASS design stale: 不重分发全文
 PASS design stale: Art.53–55
@@ -51,6 +52,8 @@ PASS design stale: Art.5 选 5 项
 PASS design stale: insufficient_profile
 PASS design stale: 零第三方运行时依赖
 PASS design stale: v0.4 决定
+PASS design stale: 双人核
+PASS design stale: #Art.14(1)
 PASS sections 1.1-1.4 present
 PASS answer field "claims"
 PASS answer field "binding_mode"
@@ -77,4 +80,4 @@ PASS scope exclusions count=8 (want >=3)
 PASS scope exclusion fields missing
 PASS sources fulltext count=20 (want 20)
 
-RESULT: PASS  (77 pass / 0 fail)
+RESULT: PASS  (80 pass / 0 fail)
