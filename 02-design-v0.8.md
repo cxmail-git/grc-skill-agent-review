@@ -1,11 +1,12 @@
-# GRC Skill Agent · 设计 v0.7（送 CCC 评审）
+# GRC Skill Agent · 设计 v0.8（送 CCC 评审）
 
-> 状态：**v0.7，已吸收 CCC Round-6（Block 1 / Major 11）** ｜ 日期：2026-11-01 ｜ 项目：grc-skill-agent
+> 状态：**v0.8，已吸收 CCC Round-7（Block 0 / Major 6）** ｜ 日期：2026-11-01 ｜ 项目：grc-skill-agent
+> v0.8 裁定：**删除机器译文**（V7-02 A）；**周期延到 4 周**（V7-04 C）；意图表区分问法/主题；scope_correction 触发表；evidence 随包。
 > v0.7 原则：**处置表每一项必须在正文有 §号+引文**；未落项只允许标"延后"，不得标"已落"。
 > v0.6 决定：**宿主只能选句、不得改写**（V5-01 A）；**Tier A 快照不随包/不公开**（V5-20 A）；结论词表运行时扫描；`final_text`+`validation_token`；UNVERIFIED 字段；absence 分类；CK-16 日期校验；CI 粒度到条目；PyYAML 加载策略。
 > v0.5 修正：全文快照口径统一；`validate_answer` 增**句内容**校验（evidence_quote/数字/实体/否定）、`answer_id` 与宿主模拟器；determine 残留清零并列出 backlog；金标 #19 `groups` 恢复、`coverage_note` 可机检；Art.5 计数改 7；PyYAML 安装/离线路径明确。
 > v0.4 重大变更：**determine 推迟**（G3/规则/判定用例移 backlog）；Tier A **全文快照**；ask 改**宿主选句 + `validate_answer` 校验**；允许 **PyYAML**；单人核验用 **UNVERIFIED** 降级；结论用词改"**评估**"。详见 `docs/review/v0.4-decisions.md`。
-> v0.3 关键修正：CI 判据改为**双向**（required_updates ⊆ actual_changed）；prose/translations 纳入 sentence_map；absence 有 schema+CK-14；CK-03 发布门禁四字段校验；golden #1/#3/#7/#14 与库对齐。
+> v0.3 关键修正：CI 判据改为**双向**（required_updates ⊆ actual_changed）；prose 句映射纳入 sentence_map；absence 有 schema+CK-14；CK-03 发布门禁四字段校验；golden #1/#3/#7/#14 与库对齐。
 > v0.2 变更：locator 7 形态、claim+prose 双轨、CK-03 状态机、影响面 CI 按 change_id、determine 增 applies_later、检索/核验指标补全；见 `docs/review/pre-review-resolution.md`。
 > 自检：记录见 `docs/review/spec-self-review.md`；v0.7 的落点由 `scripts/check_design.py` 逐项核对。
 > 上游依据：本项目继承 `ai-grc-kb-v2-p0-rev4` 的知识契约（下称 rev4），并吸收 `08-四轮缺陷聚类与流程改进建议.md` 的五条根因与 P-1~P-7。
@@ -20,7 +21,7 @@
 
 **不做什么**：不输出"合规/不合规"结论、不评分、不构成法律意见；MVP 不做自动爬虫、Web UI、多租户、跨法域对比页、向量检索。
 
-**MVP 规模**：3 周；**52 条 KU（EU 32 + CN 20）**；20 个金标问答 + 5 个独立负例；citation 覆盖 100%；无据必拒答；改 1 条 KU 后 5 分钟内给出过期页清单。
+**MVP 规模**：**4 周**（V7-04 C）；**52 条 KU（EU 32 + CN 20）**；20 个金标问答 + 5 个独立负例；citation 覆盖 100%；无据必拒答；改 1 条 KU 后 5 分钟内给出过期页清单。
 
 **三个关键设计取舍**：
 1. **只做"评估"不做"判定"**：MVP 不输出适用/不适用结论；范围问题只引用 KU 原文 + `coverage_note` + 免责。determine 与规则引擎推迟到 v0.2。
@@ -46,7 +47,7 @@ rev1→rev4 五轮把一个"法条 → KU → 派生页 → 校验"的可审计�
 |---|---|---|
 | G1 | 消化：新增/修订来源可进入知识库，且不破坏既有契约 | `grc ingest → validate → compile` 全绿；变更影响面清单可复现 |
 | G2 | 回答：问题→带引用答案；无据必拒答 | 20 金标 citation 覆盖 100%；5 个负例全部拒答 |
-| G3 | **推迟（v0.2 产品版本）**：determine 与规则引擎 | 不进入 3 周 MVP；范围类问题由 ask 按 KU 原文作答 |
+| G3 | **推迟（v0.2 产品版本）**：determine 与规则引擎 | 不进入 4 周 MVP；范围类问题由 ask 按 KU 原文作答 |
 | G4 | 跨平台：同一能力在两类 Agent 宿主可用 | DSH 与 Claude Code 各跑通 3 个问题；MCP `tools/list` 六工具可发现 |
 | G5 | 更新可演示：改 1 条 KU 后 5 分钟内检出 | `grc impact` 输出受影响页 + 过期 KU；重编译后问答引用同步 |
 
@@ -97,7 +98,7 @@ rev1→rev4 五轮把一个"法条 → KU → 派生页 → 校验"的可审计�
 
 ## 3. 范围与交付形态
 
-### 3.1 In Scope（3 周）
+### 3.1 In Scope（4 周）
 
 | 类别 | 内容 |
 |---|---|
@@ -115,7 +116,7 @@ rev1→rev4 五轮把一个"法条 → KU → 派生页 → 校验"的可审计�
 
 - 作答语言：默认**跟随用户语言**；可显式指定（`--lang zh\|en` 或请求内声明）。
 - 原文引用：始终保留**原文语言逐字**，不翻译。
-- **英文 KU → 中文答案（V6-02 A）**：候选句 = 中文固定框架 + 英文逐字引文（如「根据 Art.14(1)：『…』」）；不做机器翻译；用户显式要求译文时，译文单列并标 `machine`，不进入 citation。
+- **英文 KU → 中文答案（V6-02 A）**：候选句 = 中文固定框架 + 英文逐字引文（如「根据 Art.14(1)：『…』」）；**MVP 不提供机器译文**（V7-02 A），用户要求译文时说明"仅提供原文引用"。
 - 免责声明与拒答理由：按作答语言本地化（zh/en 两套，MVP 不做第三语言）。
 
 ---
@@ -131,7 +132,7 @@ rev1→rev4 五轮把一个"法条 → KU → 派生页 → 校验"的可审计�
 Tier A 全文快照 snapshots/<source_id>.md（官方全文 + fulltext_sha256 + 核验头）
    │  extract（人工+可选 LLM 起草）
    ▼
-KU YAML（29 字段，gsk-*）── validate（CK-01~13）── compile ──► 派生页 pages/*.md
+KU YAML（29 字段，gsk-*）── validate（CK-01~16）── compile ──► 派生页 pages/*.md
    │                                                        │  render_hash / ku_hash
    └──────────────► 索引 index.json（BM25 + 元数据）◄────────┘
                           │
@@ -150,11 +151,11 @@ KU YAML（29 字段，gsk-*）── validate（CK-01~13）── compile ──
 | 组件 | 职责 | 依赖 | 可独立测试 |
 |---|---|---|---|
 | `grc_core.schema` | KU/页面/registry/catalog 的结构与取值域 | PyYAML | ✅ 单测 |
-| `grc_core.validate` | CK-01~13（MVP 全实现；CK-13 冲突存在性人工） | schema | ✅ 夹具 |
+| `grc_core.validate` | CK-01~16（CK-13 冲突存在性人工） | schema | ✅ 夹具 |
 | `grc_core.compile` | KU → 派生块/页面渲染、双哈希、refs.json | schema | ✅ 黄金文件 |
 | `grc_core.index` | BM25 + 元数据过滤（jurisdiction/topic/type） | compile 产物 | ✅ |
 | `grc_core.answer` | 答案组装、拒答、语言与免责 | index | ✅ 金标 |
-| `grc_core.binder` | claim 三模式绑定（quote/translation/frame）+ 独立 unsupported 复核 | answer | ✅ 单测 |
+| `grc_core.binder` | claim 两模式绑定（quote/frame）+ 独立 unsupported 复核 | answer | ✅ 单测 |
 | ~~`grc_core.determine`~~ | **推迟到 v0.2**；MVP 不实现 | — | — |
 | `grc_core.ingest/impact/freshness` | 来源登记、fingerprint、影响面、过期检测 | 全部 | ✅ |
 | `grc_mcp` | MCP stdio 协议、工具注册、入参校验 | core | ✅ 协议测试 |
@@ -193,13 +194,13 @@ KU YAML（29 字段，gsk-*）── validate（CK-01~13）── compile ──
 
 ---
 
-## 5. 数据契约（继承 rev4 + 五处变更）
+## 5. 数据契约（继承 rev4 + 六处变更）
 
 ### 5.1 原样继承（不重新发明）
 
 - **KU 29 字段** = 17 fact-bearing（#2–#18）+ 12 bookkeeping（#1 + #19–#29）；`instrument_type` 11 值闭合；`locator` **7 形态**（§5.2 C4）；`gap` 为登记对象不入 29。
 - **六类页面**必备段、`kb:derived` / `kb:table` 语法、`render_hash` / `ku_hash` 计算、`rendered_blocks` 与块 id 规则、结构声明行白名单（3 字段）。
-- **13 条校验** CK-01~13；WS-01~09；DF-1~6 / DF-4b / DF-4c 与 EX-1~7；front-matter 8 键；`log.md` 4 列；`refs.json` 4 键。**v0.3 新增 CK-14（absence 依据）与 CK-15（核验来源）**，见 §7.4。
+- **16 条校验** CK-01~16（v0.7 增 CK-14 absence、CK-15 核验来源、CK-16 日期 token）；WS-01~09；DF-1~6 / DF-4b / DF-4c 与 EX-1~7；front-matter 8 键；`log.md` 4 列；`refs.json` 4 键。
 - **08 根因对策**：P-1 数字/命名生成化；P-2 变更影响面矩阵；P-3 规则四要素（判定主体/输入/闭合值域/错误码）；P-4 探针正反基线；P-5 证据 lint。
 - **N-11 修法（W1-1b，用户无需再裁定）**：CK-11 增 `log.md` 每行校验——`event ∈ {INGEST,RECOMPILE,RECHECK,SIGNOFF,SUPERSEDE}`、`subject` 可解析为存在的 ku_id/page_slug/registry_id、`date` 为 ISO 且按 rev4 倒序满足 `date ≤ 上一行`（`DANGLING_REF`）；CK-09 增 `## 更新记录` 表必须是 log.md 的投影（`WHITELIST_VALUE_MISMATCH`）；各配 1 反例。
 - **页面侧引文**（预演 F-P1）：页面只渲染 `verbatim_excerpt` 的派生块；WS-03 增子项"块内引文必须是 excerpt 连续子串"；不得在正文另写引文。
@@ -219,11 +220,11 @@ KU YAML（29 字段，gsk-*）── validate（CK-01~13）── compile ──
 
 | # | 变更 | 理由 | 影响 |
 |---|---|---|---|
-| **C1** | **Tier A 存官方全文快照**（仅本地；**不随包/不公开**，发布包只含 `fulltext_sha256` 与核验记录）；**snapshot 是来源级全文的唯一真值**，每 KU 的核验元数据在 `kb/verification.yaml`；registry 只存来源级字段。元数据：`source_url` / `verification_url` / `version` / `fulltext_sha256` / `page_digest` / `verification_mode` / `verification_source` / `verified_at` / `verified_by` / `second_review` / `evidence_ref` | 让 CK-03②（章节定位）与"可审计"可执行；消除双真值 | §5.3；发布门禁按 §5.3 校验 |
-| **C2** | 作答语言 = 用户语言或指定语言；原文引用恒为原文；译文单列并标 `machine` | 用户要求 | `language` / `translations[].claim_ids`；claim `binding_mode: translation` |
+| **C1** | **Tier A 存官方全文快照**（仅本地；**不随包/不公开**，发布包只含 `fulltext_sha256` 与核验记录）；**snapshot 是来源级全文的唯一真值**，每 KU 的核验元数据在 `kb/verification.yaml`；registry 只存来源级字段。元数据：`source_url` / `verification_url` / `version` / `fulltext_sha256` / `page_digest` / `verification_mode` / `verification_path` / `verification_source` / `verified_at` / `verified_by` / `second_review` / `evidence_ref` | 让 CK-03②（章节定位）与"可审计"可执行；消除双真值 | §5.3；发布门禁按 §5.3 校验 |
+| **C2** | 作答语言 = 用户语言或指定语言；原文引用恒为原文；**MVP 无机器译文**（V7-02 A） | 用户要求 | `language`；claim `binding_mode: quote\|frame` |
 | **C3** | 新增**非 KU** 表：`catalog.yaml`、`kb/scope_exclusions.yaml`（absence 依据）；`rules/applicability-*` 与 `kb/profiles/` 随 determine 推迟 | 检索与否定句所需 | 新增 lint `NON_KU_FACT`；新增 **CK-14**（§7.2） |
 | **C4** | `locator` 7 形态，**每条都给全文正则**（见下）；禁止区间与混写 | EU 字母项/附件、CN 款/项在原 5 形态下不可表达 | CK-01 的 locator 校验；ku-plan 52 条单 locator |
-| **C5** | 答案改为「claim（证据单元）+ sentences（逐句映射）+ translations（带 claim_ids）」；`sentence_map` 由 binder 校验 | prose/译文可夹带无据事实（N-01） | §7 全文重写；binder 校验到句 |
+| **C5** | 答案改为「claim（证据单元）+ sentences（逐句映射）」；**无 translations 通道** | prose 可夹带无据事实（N-01） | §7 全文重写；binder 校验到句 |
 | **C6** | `applies_from` 规则级设计**随 determine 推迟**；v0.4 只在 KU 的 `effective_date` 与 `transition_note` 保留双日期说明 | 多日期表达需求推迟到 v0.2 | backlog |
 
 **locator 7 形态（全文正则；CK-01 逐字实现）**：
@@ -321,6 +322,7 @@ grc-skill-agent/
   tier: A
   source_url: "https://eur-lex.europa.eu/..."        # 登记链接
   verification_url: "https://ai-act-service-desk.ec.europa.eu/en/ai-act/article-14"
+  verification_path: manual        # online | manual
   accessed_at: 2026-10-31
   status: published
 # 注意：verification / second_review / verified_by 只在 kb/verification.yaml，registry 不存
@@ -382,7 +384,7 @@ evidence:
 
 ---
 
-## 7. 答案契约（v0.6：候选句 + 选句 + validation_token）
+## 7. 答案契约（v0.8：候选句 + 选句 + validation_token）
 
 > 用户可见措辞统一用"**评估**"（不用"判定"）；不输出适用/不适用结论。
 
@@ -391,7 +393,7 @@ evidence:
 ```json
 {
   "mode": "answer|partial|refuse",
-  "partial_reason": "conflict|cross_jurisdiction|coverage_gap|null",
+  "partial_reason": "conflict|cross_jurisdiction|coverage_gap|expired|null",
   "answer_id": "ans_01J…",                 // validate_answer 必须回传
   "skeleton": ["c1", "c2"],                // 必须覆盖的 claim
   "unverified": false,                     // 任一 KU second_review=false
@@ -400,20 +402,17 @@ evidence:
   "groups": [{"label": "EU", "claim_ids": ["c1"]}],
   "language": "zh",
   "sentences": [
-    {"sid": "s1", "text": "高风险系统的提供者须在投放市场前完成合格评定。", "claim_ids": ["c1"], "frame": false},
+    {"sid": "s1", "text": "高风险系统的提供者须在投放市场前完成合格评定。", "claim_ids": ["c1"],
+     "frame": false, "required": true, "order": 10, "verbatim": false, "topic": "obligation"},
     {"text": "以下按法域分列。", "claim_ids": [], "frame": true}
-  ],
-  "translations": [
-    {"lang": "en", "source": "machine",
-     "sentences": [{"text": "Providers of high-risk AI systems …", "claim_ids": ["c1"]}]}
   ],
   "claims": [
     {"claim_id": "c1", "text": "…（core 生成；英文 KU 用中文框架 + 英文引文）",
-     "binding_mode": "quote|translation|frame",
+     "binding_mode": "quote|frame",
      "support_type": "direct|composite|absence|frame",
      "ku_ids": ["gsk-eu-art16"], "scope_exclusion_id": null,
      "locator": "Art.16", "anchor": "p1",
-     "verbatim": "…（原文逐字；translation 时为原文）",
+     "verbatim": "…（原文逐字）",
      "extraction_span": {"field": "obligation[0].text", "start": 0, "end": 42},
      "confidence": "high"}
   ],
@@ -423,10 +422,10 @@ evidence:
      "source_class": "primary", "tier": "A", "locator": "Art.16", "anchor": "p1",
      "verbatim": "…", "source_url": "https://eur-lex.europa.eu/…",
      "verification_url": "https://ai-act-service-desk.ec.europa.eu/en/ai-act/article-16",
-     "accessed_at": "2026-10-31", "verification": "manual",
+     "accessed_at": "2026-10-31", "verification_mode": "manual",
      "verified_at": "2026-10-31", "verified_by": "R-2"}
   ],
-  "coverage_note": "本库覆盖 Art.5 的 7 项禁止实践；其余 3 项（a/b/bb）未收录。",
+  "coverage_note": "由 coverage_codes 生成（不手写计数）",
   "freshness": {"oldest_verified_at": "2026-10-31", "expired_ku_ids": []},
   "refusal": {"reason": "no_ku|out_of_scope|conflict_unresolved|not_legal_advice|scope_correction",
                "missing": "…", "suggested_action": "…"},
@@ -434,11 +433,11 @@ evidence:
 }
 ```
 
-### 7.2 硬规则（v0.3）
+### 7.2 硬规则（v0.8）
 
 1. **事实句绑证据**：`support_type ∈ {direct, composite}` 的 claim 必须有 `ku_ids`；`absence` 必须有 `scope_exclusion_id` 且解析到 `kb/scope_exclusions.yaml`（**CK-14**）；`frame` 必须**不含 DF-1~DF-6 任一形态**，且只允许"定义/方法/回答结构"句。
 2. **逐句映射**：`sentences[]` 每个 `frame=false` 的句子必须有非空 `claim_ids`；`frame=true` 的句子由 DF 扫描器复核。**不存在"不校验 prose"的例外**。
-3. **译文受同一约束**：`translations[].sentences[].claim_ids` 必填且与原句一致；`citations[].verbatim` 永不翻译。
+3. **无译文通道（V7-02 A）**：MVP 不生成机器译文；`citations[].verbatim` 永不翻译；用户要求译文时说明仅提供原文引用。
 4. **prose 不引入新事实**：`sentences[].text` 只能复述所绑 claim 的内容；binder 逐句校验（§7.3）。
 5. **无据必拒**：无命中 → `refuse(no_ku)`；要求法律结论/适用性结论 → `refuse(not_legal_advice)`；范畴混淆 → `refuse(scope_correction)`。
 6. **partial 与 refuse 的分界**：整段答案无法成立 → `refuse`；仅部分断言可成立 → `partial` + `partial_reason`。`conflict`（部分冲突）与 `conflict_unresolved`（整体不可判）**二选一**，由"剩余 claim 是否足够回答"决定。
@@ -449,8 +448,8 @@ evidence:
 ### 7.3 实现路线（防幻觉）
 
 - **候选句生成**：core 从 KU 字段检索并生成候选句；宿主只能选句，**不得改写**。
-- **binder 三模式**：`quote` 校验 span 是 KU 字段连续子串；`translation` 校验原文子串 + 译文标记；`frame` 走 DF-1~6 扫描。
-- **句级校验**：`sentence_map` 校验每句 `claim_ids` 存在、claim 已绑定、句子不含未绑定的事实形态；`translations` 同规则。
+- **binder 两模式**：`quote` 校验 span 是 KU 字段连续子串；`frame` 走 DF-1~6 扫描。
+- **句级校验**：`sentence_map` 校验每句 `claim_ids` 存在、claim 已绑定、句子不含未绑定的事实形态。
 - **独立复核**：`unsupported_claims` 由独立脚本重算（不调用 `answer.py`），按 `(ku_id,locator,verbatim)` 与句级映射双重比对。
 - **frame 比例**：`frame` 句占比 >20% 时 WARN（防止用框架句逃避绑定）。
 - **`--no-llm`**：纯抽取式；`--llm` 与 `--no-llm` 指标分表记录，不合并。
@@ -459,7 +458,7 @@ evidence:
 
 **接口**：`ask` 返回 `answer_id` + `sentences[]`（core 候选句；每句 `sid`/`claim_ids`/`required`/`order`/`verbatim`）+ `skeleton` + `claims` + `citations` + `coverage_codes`/`scope_note_codes` + `mode` + `unverified`。
 
-**宿主权限**：只能选择/排序；`final_text` 必须等于所选句子按序的**逐字拼接**；不得改写、不得新增。必选句（`required:true`：规则、例外、coverage/unverified/disclaimer 提示）必须全选且顺序不变。
+**宿主权限**：只能选择/排序；`final_text` = 所选句子按序用**换行 `\n` 拼接**（不加空格）；不得改写、不得新增。必选句（`required:true`：规则、例外、coverage/unverified/disclaimer 提示）必须全选且顺序不变。
 
 ```json
 {"answer_id":"ans_…","selected_sids":["s1","s2"],"final_text":"…","language":"zh"}
@@ -479,11 +478,17 @@ evidence:
 
 **失败回退**：校验失败 → `render_extractive`（逐字展示全部必选句 + 免责）或 `refuse`。
 
-**覆盖与模式（V6-06）**：`scope_note_codes`（范围说明，如 #8/#14/#16）**不改变 mode**；`coverage_codes`（库内缺口，如 #1/#2/#3/#6）→ `partial(coverage_gap)`；`groups>1` → `partial(cross_jurisdiction)`；冲突 → `partial(conflict)`；refusal 判定顺序：`not_legal_advice` > `scope_correction` > `out_of_scope` > `no_ku` > 正常作答；`expired` 任一 KU → `partial(coverage_gap)` + 警告；`unverified` 仅在答案中加警告，不改变 mode。`coverage_note` 由 core 从 `coverage_codes` 生成，不手写计数。
+**覆盖与模式（V6-06）**：`scope_note_codes`（范围说明，如 #8/#14/#16）**不改变 mode**；`coverage_codes`（库内缺口，如 #1/#2/#3/#6）→ `partial(coverage_gap)`；`groups>1` → `partial(cross_jurisdiction)`；冲突 → `partial(conflict)`；refusal 判定顺序：`not_legal_advice` > `scope_correction` > `out_of_scope` > `no_ku` > 正常作答；`expired` 任一 KU → `partial_reason: expired` + 警告；`unverified` 仅在答案中加警告，不改变 mode。`coverage_note` 由 core 从 `coverage_codes` 生成，不手写计数。
 
-**意图规则（V5-12 / V6-07）**：core 用**闭合关键词/句式表**识别 `not_legal_advice`：`合不合规|算不算违规|是否违法|能不能做|整改清单|告我|法律责任|我们会怎样`（zh）与 `are we compliant|is it legal|can we do|remediation list|liability`（en）。命中 → `refuse(not_legal_advice)`，不进入候选句生成。`--no-llm` 的含义：禁用可选的模型意图解析，仅用该规则表；宿主仍只能选句。
+**意图规则（V7-01）**：core 用闭合表识别拒答，**区分问法与主题**：
+- `not_legal_advice`：主体模式「你们/我们/贵司/本公司」+「会不会/是否/算不算/能不能」+「合规/违法/违规/被罚/承担责任」；或「整改清单/整改方案」。**不使用裸词「法律责任」**（#18 问的是法条标题，应正常作答）。
+- `scope_correction`：出现「标准/认证/白皮书/厂商」+「必须/要求/法定/强制」组合，且库内无对应法规义务 → `refuse(scope_correction)`。
+- `out_of_scope`：命中 `scope_exclusion` 的 coverage 条目。
+- `no_ku`：以上都不命中且检索无支持 claim。
+- 每类各配 1 正例 1 反例（金标 #18 为正例，#9/#17 为 scope_correction）。
+- `--no-llm`：仅用上述规则表；不调用任何模型；宿主仍只能选句。
 
-**对账（V6-04/15）**：`issued_vs_validated = 100%`（未校验 0，二选一写死）；`grc audit-answers` 检查签发但未校验；answer 状态存 `var/answers/<id>.json`（R10 例外：仅 claim id + 候选句 hash + 展示 hash，不存查询原文）；并发用文件锁。
+**对账（V6-04/15）**：仅对**已展示**答案要求 `issued_vs_validated = 100%`；`grc audit-answers` 检查签发但未校验；answer 状态存 `var/answers/<id>.json`（R10 例外：含候选句原文 + 展示 hash，**不存查询原文**，30 天清理）；并发用文件锁。
 
 ### 7.4.1 新增校验：CK-14 / CK-15
 
@@ -499,7 +504,7 @@ evidence:
    absence_kind: coverage, reason: "GPAI 章 Art.51–56 不在本库收录范围", evidence_url: "https://eur-lex.europa.eu/…"}
 - {id: sx-eu-iso42001, jurisdiction: EU, registry_id: reg-eu-ai-act, as_of: 2026-10-31,
    absence_kind: source_silent, absence_terms: ["ISO 42001", "ISO/IEC 42001"], reason: "条例未要求 ISO 42001 认证", evidence_url: "https://eur-lex.europa.eu/…"}
-- {id: sx-cn-vendor, jurisdiction: CN, registry_id: reg-cn-genai, as_of: 2026-10-31,
+- {id: sx-cn-vendor, jurisdiction: CN, registry_id: [reg-cn-genai, reg-cn-label], as_of: 2026-10-31,
    absence_kind: source_silent, absence_terms: ["认证", "certification"], reason: "两部 CN 法规均未规定厂商认证为法定义务", evidence_url: "https://www.cac.gov.cn/…"}
 ```
 
@@ -511,14 +516,14 @@ evidence:
 
 ## 8. 适用性评估（backlog）
 
-`determine` 已移出 3 周 MVP；完整规格见 [`docs/backlog/determine-v02.md`](docs/backlog/determine-v02.md)。正文不保留规则/画像 schema，避免误实现。
+`determine` 已移出 4 周 MVP；完整规格见 `docs/backlog/determine-v02.md`（评审包内为 `13-backlog-determine.md`）。正文不保留规则/画像 schema，避免误实现。
 
 ## 9. 评估与质量门禁
 
 ### 9.1 金标集（20 题 + 独立负例 5 题）
 
 - **金标 20 题**（附录 A）：`id / question / language / expected_mode / expected_claim_ku_ids / expected_refusal_reason / expected_coverage_note / expected_facts / forbidden_terms / retrieval_expect / partial_reason?`。`expected_facts` 由非规则作者独立撰写（防自评）。
-- **拒答题固定 5 题**：#4（no_ku）、#9（scope_correction）、#10（not_legal_advice）、#17（scope_correction）、#20（not_legal_advice）——脚本可复算 5/5。
+- **拒答题固定 5 题**：#4（out_of_scope，sx-eu-gpai）、#9（scope_correction）、#10（not_legal_advice）、#17（scope_correction）、#20（not_legal_advice）——脚本可复算 5/5。
 - **独立负例 5 题**：`eval/adversarial.yaml`，不计入金标分母。
 - **检索验收**：每题 `retrieval_expect`；top5 召回 ≥18/20；每题至少 1 个别名（lint 强制）；`no_ku` 判据 = 最低分阈值 + 必含词未命中；主题链由 `catalog.topics` 展开。
 - **用例类（6 类）**：事实/义务、否定/纠正、跨域、时间敏感（`--now`）、提示注入、多轮/同题异措辞。
@@ -538,7 +543,7 @@ evidence:
 | 负例拒答 | 5/5 | `adversarial.yaml` |
 | 稳定性 | 同题两次 claim 三元组集合相同（`--llm` 轨） | `(ku_id, locator, verbatim)` |
 | 宿主合规 | `validate_answer.ok=true` = 100% | `eval/host.py` |
-| 签发/校验对账 | `issued_vs_validated` = 100%（未校验 0，二选一写死） | `grc audit-answers` |
+| 签发/校验对账 | 已展示答案的 `issued_vs_validated` = 100%（未校验 0） | `grc audit-answers` |
 | 跳过校验 | `--host-simulate skip` 必须 FAIL | `eval/host.py` |
 | 核验覆盖 | 100% KU 可解析 `(snapshot, verification_mode, verified_at)` | `grc freshness --stats` |
 | UNVERIFIED 占比 | 可统计展示（不设硬门槛） | `grc freshness --stats` |
@@ -554,16 +559,17 @@ evidence:
 
 ---
 
-## 10. 里程碑（3 周）
+## 10. 里程碑（4 周）
 
 | 周 | 交付物 | 完成判据 |
 |---|---|---|
 | **W1-0** | **契约干跑门禁**：publish 态样例跑 CK + 一次 ask | publish 态样例全绿（draft 仅 smoke）；ask 入 `evidence/` |
 | **W1** | 仓库骨架、core（schema/validate/compile/index/binder）、EU 20 KU、CLI、10 金标 | `grc validate` 全绿；`grc ask` 10 题跑通；CK 探针正反基线 |
 | **W2** | EU 剩余 12 KU + CN 20 KU、页面 8–10 页、MCP 六工具（含 validate_answer）、20 金标 + 5 负例 | 20 金标指标达标；宿主合规用例通过；MCP `tools/list` 可见 |
-| **W3** | update 闭环 + impact 矩阵、DSH/CC skill 适配、eval CI、demo、README/免责 | 变更演示 <5 分钟；两家宿主各 3 问；`grc eval` 一条命令全绿；spec v1.0 冻结 |
+| **W3** | update 闭环 + impact 矩阵、DSH/CC skill 适配、eval CI、demo、README/免责 | 变更演示 <5 分钟；两家宿主各 3 问；`grc eval` 一条命令全绿 |
+| **W4** | 缓冲/收口：CCC 复审、缺陷清零、spec v1.0 冻结、发布包（不含快照） | 全部 Block 关闭；`grc eval` 复跑全绿；发布清单核对 |
 
-**人力假设（V6-11 分项）**：工程 **16–19 人日**（schema/validate/compile/index/answer/validate_answer/MCP/CI/eval）+ 研究 **8–10 人日**（52 KU 录入与核验）；1 名工程 15 个工作日的缺口用 2 人并行或砍范围补；单人核验用 `UNVERIFIED`。
+**人力假设（V7-04 C：延到 4 周）**：工程 **16–19 人日**（schema/validate/compile/index/answer/validate_answer/MCP/CI/eval）+ 研究 **8–10 人日**（52 KU 录入与核验）；4 周 = 20 个工作日，单人工程可覆盖，W4 作缓冲；单人核验用 `UNVERIFIED`。
 
 ---
 
@@ -571,8 +577,8 @@ evidence:
 
 | # | 风险 | 影响 | 对策 |
 |---|---|---|---|
-| R1 | 全文快照无法自动发现上游改版 | 答案可能过期 | **3 周内只承诺"发布前核验"**；四态 + `--now` 探针 + 公示核验模式/`verified_by`；EUR-Lex 走 manual |
-| R2 | 3 周内 52 KU 质量不达标 | 金标失败、返工 | W1 结束先冻结 EU 20；**52 不减**；单人核 + `UNVERIFIED`（D5）；排期按 2 人并行 |
+| R1 | 全文快照无法自动发现上游改版 | 答案可能过期 | **4 周内只承诺"发布前核验"**；`verification_mode` × `freshness` 两轴 + `--now` 探针 + 公示核验模式/`verified_by`；EUR-Lex 走 manual |
+| R2 | 4 周内 52 KU 质量不达标 | 金标失败、返工 | W1 结束先冻结 EU 20；**52 不减**；单人核 + `UNVERIFIED`（D5）；排期按 2 人并行 |
 | R3 | 范围回答被误读为"适用/不适用"结论 | 法律与声誉风险 | determine 移出 MVP；ask 只答 KU 原文 + `coverage_note`；输出用"评估"，不输出 verdict |
 | R4 | LLM 引入幻觉 | 破坏"不造假"底线 | 抽取优先 + binder 后校验 + `--no-llm` 兜底 + 无据拒答 |
 | R5 | 跨平台承诺过度 | 演示翻车 | MVP 只承诺 DSH + Claude Code 两家 + MCP 通用；Codex 仅抽验 |
@@ -580,7 +586,7 @@ evidence:
 | R7 | 版权/许可 | 无法再分发或被迫删除 | Tier A 存官方公开法律文本全文；署名；**不商业转售**；README 声明；付费标准不收录 |
 | R8 | 规则与 KU 双轨导致"修而不回灌" | 重演 rev4 五轮返工 | 影响面矩阵 + 反向探针 + CI 拦截（P-2/P-4） |
 | R9 | 来源文本里的提示注入（"忽略以上指令"） | 被检索内容当指令执行 | 检索结果一律视为数据、不进入系统提示；skill 只通过工具取数，不执行来源内指令 |
-| R10 | 查询日志泄露商业信息 | 隐私/合规 | MVP 默认不落盘；`--log` 显式开启且只记 query hash + 命中 ku_ids |
+| R10 | 查询日志泄露商业信息 | 隐私/合规 | MVP 默认不落盘；`--log` 显式开启且只记 query hash + 命中 ku_ids。**例外**：`var/answers/<id>.json` 存候选句原文 + 展示 hash，30 天清理，不存查询原文 |
 | R11 | 单人核验（`second_review:false`）导致错误被发布 | 知识质量 | 发布标 `UNVERIFIED`；答案带警告；`grc eval` 统计 UNVERIFIED 占比；用户书面接受 |
 
 ---
@@ -619,7 +625,7 @@ evidence:
 
 | # | 域 | 问题 | 期望 |
 |---|---|---|---|
-| 1 | EU | 高风险 AI 系统提供者在投放前有哪些义务？ | partial(coverage_gap)：Art.16 + 8–15；Art.43 未收录（sx-eu-art43） |
+| 1 | EU | 高风险 AI 系统提供者在投放前有哪些义务？ | partial(coverage_gap)：Art.16 + 8–15；coverage_codes `[sx-eu-art43, sx-eu-art17, sx-eu-art19, sx-eu-art49]` |
 | 2 | EU | 什么情况下系统会被归为高风险？ | partial(coverage_gap)：Art.6 + 已收 4 类；其余类别未收录 |
 | 3 | EU | 哪些 AI 实践被禁止？ | partial（coverage_gap）：列出库内 7 项，声明"Art.5 其余 3 项（a/b/bb）未收录" |
 | 4 | EU | 通用目的 AI 模型的义务适用于我们吗？ | refuse(out_of_scope)：GPAI 章不在收录范围（sx-eu-gpai） |
@@ -636,7 +642,7 @@ evidence:
 | 15 | CN | 备案与安全评估的要求适用于谁？ | answer；暂行办法 |
 | 16 | CN | 境外公司向境内公众提供服务是否适用？ | answer（Art.2 + Art.20）+ expected_coverage_note |
 | 17 | CN | 厂商说"必须通过某认证"是法规吗？ | refuse(scope_correction)：厂商标准≠法规 |
-| 18 | CN | 违反规定有什么法律责任？ | answer；暂行办法法律责任条 |
+| 18 | CN | 违反规定有什么法律责任？ | answer；暂行办法 Art.21（**不得被意图表误拒**，正例） |
 | 19 | CN/EU | 欧盟和中国对生成内容标识的要求分别是什么？ | partial（cross_jurisdiction）：`groups` 两组分别绑定，**不做对比分析** |
 | 20 | 通用 | 给我一份合规整改清单 | refuse(not_legal_advice) |
 
@@ -655,13 +661,13 @@ evidence:
 | 项 | rev4 | v0.7 | 原因 |
 |---|---|---|---|
 | 快照 | 全文快照 | **Tier A 全文快照**（公开法律文本，不商业转售）+ verification.yaml | 审计可执行（C1） |
-| CK-03 | 快照逐字命中 | online/manual/offline/expired 四态 | C1 的后果；EUR-Lex 走 manual |
+| CK-03 | 快照逐字命中 | online/manual/offline + freshness 两轴 | C1 的后果；EUR-Lex 走 manual |
 | 语言 | 中文 | 用户语言/指定语言 | 用户要求（C2） |
 | 非 KU 表 | 无 | catalog + scope_exclusions（rules/profiles 随 determine 推迟） | 检索/否定句（C3） |
 | 冲突处理 | CK-13 人工 | 同左（规则冲突随 determine 推迟） | 保持保守 |
 | log.md 校验 | 悬空（N-11） | 修入 CK-11/CK-09 | 继承时修复 |
 | locator 形态 | 5 形态（欧盟中心） | **7 形态**（+ 中国条款式、附件式、字母项） | EU/CN 双域定位（C4） |
-| claim 绑定 | 单轨（claim 必须为 KU 子串） | **双轨**（quote/translation/frame + support_type） | 多语言与归纳/否定句（C5） |
+| claim 绑定 | 单轨（claim 必须为 KU 子串） | **两模式**（quote/frame + support_type） | 归纳/否定句（C5） |
 | 命名域 | `ku-` | `gsk-` | 与 rev4/GovernAI 隔离（F-25） |
 
 ## 附录 D · 来源核实摘要（详见 `docs/research/source-map.md`）
@@ -683,7 +689,7 @@ evidence:
 - 两份样例均已用 29 字段全量填写，用于检验：字段是否够用、`locator` 是否能表达 CN、`verbatim_excerpt` 是否可逐字落盘。
 - **摘录候选**：`docs/research/excerpt-candidates.md` —— 52 条各给候选原文；W1 按完整句重抄、Tier A 核验后落快照。
 
-## 附录 F · Backlog（v0.2 产品版本，不属于 3 周 MVP）
+## 附录 F · Backlog（v0.2 产品版本，不属于 4 周 MVP）
 
 - `determine` 与五态评估、`rules/applicability-{eu,cn}.yaml`、`kb/profiles/`、10 个评估用例；
 - `applies_from` 规则级多日期（Annex I/III）与 `basis_ku` 回放；

@@ -42,6 +42,10 @@ PASS design marker: 评估
 PASS design marker: Art.5 选 7 项
 PASS design marker: = **32**
 PASS design marker: 16–19 人日
+PASS design marker: 4 周
+PASS design marker: W4
+PASS design marker: 无机器译文
+PASS design marker: scope_correction
 PASS design stale: 只存摘录
 PASS design stale: 不重分发全文
 PASS design stale: Art.53–55
@@ -54,6 +58,10 @@ PASS design stale: 零第三方运行时依赖
 PASS design stale: v0.4 决定
 PASS design stale: 双人核
 PASS design stale: #Art.14(1)
+PASS design stale: binding_mode: translation
+PASS design stale: 三模式
+PASS design stale: 3 周内
+PASS design stale: 四态
 PASS sections 1.1-1.4 present
 PASS answer field "claims"
 PASS answer field "binding_mode"
@@ -76,8 +84,8 @@ PASS golden partial_reason missing
 PASS golden refusal_reason missing
 PASS aliases mismatch missing=[] extra=[]
 PASS aliases zh/en weak: []
-PASS scope exclusions count=8 (want >=3)
+PASS scope exclusions count=11 (want >=3)
 PASS scope exclusion fields missing
 PASS sources fulltext count=20 (want 20)
 
-RESULT: PASS  (80 pass / 0 fail)
+RESULT: PASS  (88 pass / 0 fail)

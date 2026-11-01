@@ -45,3 +45,21 @@ CCC 指出 9 项标"采纳"但正文无对应文字。**以本表为准**：
 ## 结论
 
 架构与方向被 CCC 认可；当前 **Block 只有"文档与声明不同步"**，不是设计缺陷。恢复后先做 v0.7（纯文档/规格收紧，约 0.5–1 人日），再请 CCC 做 Round-7 或由用户批准 W1-0。
+
+---
+
+## v0.7 落点核对（Block V6-01 关闭）
+
+| V5 项 | v0.7 正文落点 | 核对 |
+|---|---|---|
+| V5-04 跨语言规范化 | §3.3 中英候选句策略；§7.4 日期/情态映射；§7.1 claim.text 由 core 生成 | ✅ |
+| V5-05 核验路径/CK-03 | §5.3 `verification_path: online\|manual`；manual 剔除抓取项；执行环境写死 | ✅ |
+| V5-06 R2/expired | §11 R2 改单人 + UNVERIFIED；§7.4 expired→partial(coverage_gap) | ✅ |
+| V5-07 锚点/元数据/实名 | §5.2 C1 去 excerpt_hash；§5.3 `#art14-1`；§7.1 `verified_by: R-2`；样例 snapshot_ref 对齐 | ✅ |
+| V5-12 关键词/no_llm | §7.4 意图规则表 + `--no-llm` 定义 | ✅ |
+| V5-15 人日分项 | §10 工程 16–19 / 研究 8–10 | ✅ |
+| V5-16 稳定性/用例数 | §9.2 `--llm` 轨、6 类各 ≥2、负例 5、留出 10 | ✅ |
+| V5-18 §8 移 backlog | §8 改为指针；`docs/backlog/determine-v02.md` | ✅ |
+| V5-21 版本残留 | 头部/§13/附录 C 改 v0.7；"9 处"删除 | ✅ |
+
+> 核对方式：`docs/specs/...v0.7.md` + `evidence/v0.7-design-check.txt`（80 PASS / 0 FAIL）。

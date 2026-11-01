@@ -4,7 +4,7 @@
 |---|---|---|
 | 00-README.md | 说明 | 是 |
 | 01-review-brief.md | 评审协议 | 是 |
-| 02-design-v0.7.md | 被评对象 | 是 |
+| 02-design-v0.8.md | 被评对象 | 是 |
 | 03-contract-digest.md | 契约摘要 | 是 |
 | 04-approval-checklist.md | 批准清单 | 否 |
 | 05/06 | v0.1 预演报告 + 处置 | 是 |

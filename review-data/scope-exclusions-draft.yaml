@@ -1,0 +1,78 @@
+# absence 依据草案（CK-14 输入）
+- id: sx-eu-gpai
+  jurisdiction: EU
+  registry_id: reg-eu-ai-act
+  as_of: 2026-10-31
+  reason: "GPAI 章 Art.51–56 不在本库收录范围"
+  evidence_url: "https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:02024R1689-20260727"
+- id: sx-eu-iso42001
+  jurisdiction: EU
+  registry_id: reg-eu-ai-act
+  as_of: 2026-10-31
+  reason: "ISO/IEC 42001 是管理体系标准，不是本条例义务"
+  evidence_url: "https://www.iso.org/standard/81230.html"
+- id: sx-cn-vendor
+  jurisdiction: CN
+  registry_id: reg-cn-genai
+  as_of: 2026-10-31
+  reason: "厂商白皮书/自愿性认证不是法规义务"
+  evidence_url: "https://www.cac.gov.cn/2025-03/14/c_1743654684782215.htm"
+- id: sx-eu-art43
+  jurisdiction: EU
+  registry_id: reg-eu-ai-act
+  as_of: 2026-10-31
+  absence_kind: coverage
+  reason: "Art.43 合格评定细则不在本库收录范围（仅收录 Art.16 总览）"
+  evidence_url: "https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:02024R1689-20260727"
+- id: sx-eu-annex3-rest
+  jurisdiction: EU
+  registry_id: reg-eu-ai-act
+  as_of: 2026-10-31
+  absence_kind: coverage
+  reason: "Annex III 仅收录类别 1/3/4/5；2/6/7/8 未收录"
+  evidence_url: "https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:02024R1689-20260727"
+- id: sx-eu-annex4
+  jurisdiction: EU
+  registry_id: reg-eu-ai-act
+  as_of: 2026-10-31
+  absence_kind: coverage
+  reason: "Annex IV 技术文档细则未收录；Art.11 只给总则"
+  evidence_url: "https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:02024R1689-20260727"
+- id: sx-eu-art5-rest
+  jurisdiction: EU
+  registry_id: reg-eu-ai-act
+  as_of: 2026-10-31
+  absence_kind: coverage
+  reason: "Art.5 仅收录 7 项；a/b/bb 未收录"
+  evidence_url: "https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:02024R1689-20260727"
+- id: sx-cn-vendor
+  jurisdiction: CN
+  registry_id: reg-cn-genai
+  as_of: 2026-10-31
+  absence_kind: source_silent
+  reason: "两部 CN 法规均未规定厂商认证为法定义务"
+  evidence_url: "https://www.cac.gov.cn/2025-03/14/c_1743654684782215.htm"
+- id: sx-eu-art17
+  jurisdiction: EU
+  registry_id: reg-eu-ai-act
+  as_of: 2026-10-31
+  absence_kind: coverage
+  reason: "Art.17 质量管理体系细则未收录（Art.16 总览仅提及）"
+  absence_terms: ["quality management system"]
+  evidence_url: "https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:02024R1689-20260727"
+- id: sx-eu-art19
+  jurisdiction: EU
+  registry_id: reg-eu-ai-act
+  as_of: 2026-10-31
+  absence_kind: coverage
+  reason: "Art.19 日志自动生成细则未收录"
+  absence_terms: ["logs"]
+  evidence_url: "https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:02024R1689-20260727"
+- id: sx-eu-art49
+  jurisdiction: EU
+  registry_id: reg-eu-ai-act
+  as_of: 2026-10-31
+  absence_kind: coverage
+  reason: "Art.49 登记义务未收录"
+  absence_terms: ["registration"]
+  evidence_url: "https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:02024R1689-20260727"

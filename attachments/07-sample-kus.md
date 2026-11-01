@@ -117,7 +117,7 @@ source_class_confidence: high
 as_of: 2026-10-31
 locator: "第七条"
 registry_id: reg-cn-genai
-snapshot_ref: "snapshots/gsk-cn-genai-art7.md#art7"
+snapshot_ref: "snapshots/reg-cn-genai.md#art7"
 first_seen: 2026-10-31T00:00:00-04:00
 fingerprint: "minhash96:79b64ec94fd3ea742d65872c5ddbcf7248d7ca9ef80ca261ef1fc5b002db47cc2ea6fa4825d6b4e1f7db5c08de17cfac"
 gap:
