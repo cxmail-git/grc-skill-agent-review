@@ -1,0 +1,41 @@
+round: 7
+design: v0.7
+design_commit: 011f5e23631d879f1d982e0c5f3373c9f78bb793
+design_sha256: e8f9b6f53ce526a3ac4ec54db7d8767e5eeaa5150323ae18478aa2e82ff20623
+package_sha256_reported: 2bd36127203665c8506763784ee64fb0b42becaf7b2b4b53bc73f61ade7548b3
+package_sha256_reproduced: false   # method undefined; SHA256SUMS.txt verified OK
+verdict: B                         # conditional pass
+veto: none
+counts: {block: 0, major: 6, minor: 6}
+v6_closure:
+  V6-01: closed            # all 9 V5 items found in design text; residue V7-05, V7-10
+  V6-02: option_A_chosen   # V7-02 (translation channel), V7-11 (no decision record)
+  V6-03: closed
+  V6-04: closed            # V7-06 metric semantics
+  V6-05: closed
+  V6-06: mostly_closed     # V7-03, V7-12
+  V6-07: mostly_closed     # V7-09
+  V6-08: mostly_closed     # V7-10 (CN sample)
+  V6-09: closed            # V7-08
+  V6-10: mostly_closed     # V7-07
+  V6-11: partial           # V7-04
+  V6-12: not_landed        # V7-05
+  V6-13_14_15: partial     # V7-10, V7-06
+  V6-16: closed
+findings:
+  - {id: V7-01, severity: Major, dim: "D4/D7", loc: "§7.4 intent rules", title: "not_legal_advice keyword table ('法律责任') refuses golden #18; no scope_correction trigger table"}
+  - {id: V7-02, severity: Major, dim: D4, loc: "§3.3,§7.1,§7.2-3,C2/C5", title: "Machine-translation channel bypasses select-only guarantee"}
+  - {id: V7-03, severity: Major, dim: D7, loc: "§9.1 vs App.A", title: "Golden #4 expected no_ku (§9.1) vs out_of_scope (App.A)"}
+  - {id: V7-04, severity: Major, dim: D1, loc: "§10, R2", title: "Capacity gap (16-19 vs 15 eng days) acknowledged but undecided; 'add people or cut scope' contradicts R2 '52 not reduced'"}
+  - {id: V7-05, severity: Major, dim: D8, loc: "evidence/, header line 10", title: "check_design.py and checked data files not in package; no v0.7 landing table; V6-12 not landed"}
+  - {id: V7-06, severity: Minor, dim: "D4/D8", loc: "§7.4,§9.2,R10", title: "issued_vs_validated=100% undefined in production; state file description contradictory; R10 exception missing"}
+  - {id: V7-07, severity: Major, dim: "D3/D4", loc: "§7.4.1 CK-14", title: "sx-cn-vendor asserts two regulations but scans one registry_id; coarse absence_terms"}
+  - {id: V7-08, severity: Minor, dim: D3, loc: "§5.3 CK-03 item 3", title: "verification_path field not in any schema"}
+  - {id: V7-09, severity: Minor, dim: D4, loc: "§7.1,§7.4,§4.2", title: "Example lacks required/order/verbatim/topic; join separator; no_llm executor; CK-14~16 ownership"}
+  - {id: V7-10, severity: Minor, dim: "-", loc: "whole doc, 07 sample", title: "Version/format residue; dead backlog link; CN sample per-KU snapshot_ref; hand-written counts in coverage_note"}
+  - {id: V7-11, severity: Minor, dim: D8, loc: "§3.3", title: "No user decision record for V6-02 option A"}
+  - {id: V7-12, severity: Minor, dim: D4, loc: "§7.4 mode", title: "expired mapped to partial(coverage_gap); needs own reason code"}
+needs_author_verification:
+  - "Digital Omnibus facts (OJ L 2026/01744, dates)"
+  - "Service Desk page fetchability"
+  - "Zero hits of '认证' in both CN regulations"
