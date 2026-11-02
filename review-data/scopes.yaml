@@ -1,131 +1,205 @@
 version: 1
 scopes:
-  - scope_id: sc-eu-ai-act-h
-    label_zh: 欧盟 AI Act（横向）
-    instrument: "Regulation (EU) 2024/1689"
-    registry_id: reg-eu-ai-act
-    jurisdiction: EU
-    legal_system: EU law
-    territory: [EU, EEA]
-    industries: [horizontal]
-    actors: [provider, deployer, importer, distributor]
-    effective_from: 2026-08-02
-    effective_to: null
-    status: in_force
-    supported: true
-    source_refs: [reg-eu-ai-act]
-
-  - scope_id: sc-eu-ai-act-annex3-biometrics
-    parent: sc-eu-ai-act-h
-    label_zh: 欧盟 AI Act · 生物识别类高风险
-    instrument: "Regulation (EU) 2024/1689"
-    registry_id: reg-eu-ai-act
-    jurisdiction: EU
-    legal_system: EU law
-    territory: [EU, EEA]
-    industries: [biometrics]
-    actors: [provider, deployer]
-    effective_from: 2027-12-02
-    effective_to: null
-    status: transition
-    supported: true
-    source_refs: [reg-eu-ai-act]
-
-  - scope_id: sc-eu-ai-act-annex3-education
-    parent: sc-eu-ai-act-h
-    label_zh: 欧盟 AI Act · 教育类高风险
-    instrument: "Regulation (EU) 2024/1689"
-    registry_id: reg-eu-ai-act
-    jurisdiction: EU
-    legal_system: EU law
-    territory: [EU, EEA]
-    industries: [education]
-    actors: [provider, deployer]
-    effective_from: 2027-12-02
-    effective_to: null
-    status: transition
-    supported: true
-    source_refs: [reg-eu-ai-act]
-
-  - scope_id: sc-eu-ai-act-annex3-employment
-    parent: sc-eu-ai-act-h
-    label_zh: 欧盟 AI Act · 就业类高风险
-    instrument: "Regulation (EU) 2024/1689"
-    registry_id: reg-eu-ai-act
-    jurisdiction: EU
-    legal_system: EU law
-    territory: [EU, EEA]
-    industries: [employment]
-    actors: [provider, deployer]
-    effective_from: 2027-12-02
-    effective_to: null
-    status: transition
-    supported: true
-    source_refs: [reg-eu-ai-act]
-
-  - scope_id: sc-eu-ai-act-annex3-essential-services
-    parent: sc-eu-ai-act-h
-    label_zh: 欧盟 AI Act · 基本服务类高风险
-    instrument: "Regulation (EU) 2024/1689"
-    registry_id: reg-eu-ai-act
-    jurisdiction: EU
-    legal_system: EU law
-    territory: [EU, EEA]
-    industries: [essential_services]
-    actors: [provider, deployer]
-    effective_from: 2027-12-02
-    effective_to: null
-    status: transition
-    supported: true
-    source_refs: [reg-eu-ai-act]
-
-  - scope_id: sc-cn-genai-measures
-    label_zh: 中国生成式 AI 暂行办法
-    instrument: "生成式人工智能服务管理暂行办法"
-    registry_id: reg-cn-genai
-    jurisdiction: CN
-    legal_system: PRC law
-    territory: [CN-mainland]
-    industries: [horizontal]
-    actors: [provider]
-    effective_from: 2023-08-15
-    effective_to: null
-    status: in_force
-    supported: true
-    source_refs: [reg-cn-genai]
-
-  - scope_id: sc-intl-iso-42001
-    label_zh: ISO/IEC 42001
-    jurisdiction: INTL
-    legal_system: voluntary standard
-    territory: [global]
-    industries: [horizontal]
-    effective_from: 2023-12-01
-    effective_to: null
-    status: reference_only
-    supported: false
-    suggestion: true
-
-  - scope_id: sc-us-nist-ai-rmf
-    label_zh: 美国 NIST AI RMF
-    jurisdiction: US
-    legal_system: US federal guidance
-    territory: [US]
-    industries: [horizontal]
-    effective_from: 2023-01-26
-    effective_to: null
-    status: reference_only
-    supported: false
-    suggestion: true
-
-  - scope_id: sc-us-soc2
-    label_zh: SOC 2
-    jurisdiction: US
-    legal_system: voluntary attestation
-    territory: [global]
-    industries: [horizontal]
-    effective_from: 2010-01-01
-    effective_to: null
-    status: reference_only
-    supported: false
-    suggestion: true
+- scope_id: sc-eu-ai-act-h
+  label_zh: 欧盟 AI Act（横向）
+  instrument: Regulation (EU) 2024/1689
+  registry_id: reg-eu-ai-act
+  jurisdiction: EU
+  legal_system: EU law
+  territory:
+  - EU
+  - EEA
+  industries:
+  - horizontal
+  actors:
+  - provider
+  - deployer
+  - importer
+  - distributor
+  effective_from: 2026-08-02
+  effective_to: null
+  status: in_force
+  supported: true
+  source_refs:
+  - reg-eu-ai-act
+- scope_id: sc-eu-ai-act-annex3-biometrics
+  parent: sc-eu-ai-act-h
+  label_zh: 欧盟 AI Act · 生物识别类高风险
+  instrument: Regulation (EU) 2024/1689
+  registry_id: reg-eu-ai-act
+  jurisdiction: EU
+  legal_system: EU law
+  territory:
+  - EU
+  - EEA
+  industries:
+  - biometrics
+  actors:
+  - provider
+  - deployer
+  effective_from: 2027-12-02
+  effective_to: null
+  status: transition
+  supported: true
+  source_refs:
+  - reg-eu-ai-act
+- scope_id: sc-eu-ai-act-annex3-education
+  parent: sc-eu-ai-act-h
+  label_zh: 欧盟 AI Act · 教育类高风险
+  instrument: Regulation (EU) 2024/1689
+  registry_id: reg-eu-ai-act
+  jurisdiction: EU
+  legal_system: EU law
+  territory:
+  - EU
+  - EEA
+  industries:
+  - education
+  actors:
+  - provider
+  - deployer
+  effective_from: 2027-12-02
+  effective_to: null
+  status: transition
+  supported: true
+  source_refs:
+  - reg-eu-ai-act
+- scope_id: sc-eu-ai-act-annex3-employment
+  parent: sc-eu-ai-act-h
+  label_zh: 欧盟 AI Act · 就业类高风险
+  instrument: Regulation (EU) 2024/1689
+  registry_id: reg-eu-ai-act
+  jurisdiction: EU
+  legal_system: EU law
+  territory:
+  - EU
+  - EEA
+  industries:
+  - employment
+  actors:
+  - provider
+  - deployer
+  effective_from: 2027-12-02
+  effective_to: null
+  status: transition
+  supported: true
+  source_refs:
+  - reg-eu-ai-act
+- scope_id: sc-eu-ai-act-annex3-essential-services
+  parent: sc-eu-ai-act-h
+  label_zh: 欧盟 AI Act · 基本服务类高风险
+  instrument: Regulation (EU) 2024/1689
+  registry_id: reg-eu-ai-act
+  jurisdiction: EU
+  legal_system: EU law
+  territory:
+  - EU
+  - EEA
+  industries:
+  - essential_services
+  actors:
+  - provider
+  - deployer
+  effective_from: 2027-12-02
+  effective_to: null
+  status: transition
+  supported: true
+  source_refs:
+  - reg-eu-ai-act
+- scope_id: sc-cn-genai-measures
+  label_zh: 中国生成式 AI 暂行办法
+  instrument: 生成式人工智能服务管理暂行办法
+  registry_id: reg-cn-genai
+  jurisdiction: CN
+  legal_system: PRC law
+  territory:
+  - CN-mainland
+  industries:
+  - horizontal
+  actors:
+  - provider
+  effective_from: 2023-08-15
+  effective_to: null
+  status: in_force
+  supported: true
+  source_refs:
+  - reg-cn-genai
+- scope_id: sc-intl-iso-42001
+  label_zh: ISO/IEC 42001
+  jurisdiction: INTL
+  legal_system: voluntary standard
+  territory:
+  - global
+  industries:
+  - horizontal
+  effective_from: 2023-12-01
+  effective_to: null
+  status: reference_only
+  supported: false
+  suggestion: true
+- scope_id: sc-us-nist-ai-rmf
+  label_zh: 美国 NIST AI RMF
+  jurisdiction: US
+  legal_system: US federal guidance
+  territory:
+  - US
+  industries:
+  - horizontal
+  effective_from: 2023-01-26
+  effective_to: null
+  status: reference_only
+  supported: false
+  suggestion: true
+- scope_id: sc-us-soc2
+  label_zh: SOC 2
+  jurisdiction: US
+  legal_system: voluntary attestation
+  territory:
+  - global
+  industries:
+  - horizontal
+  effective_from: 2010-01-01
+  effective_to: null
+  status: reference_only
+  supported: false
+  suggestion: true
+- scope_id: sc-cn-label-measures
+  label_zh: 中国生成合成内容标识办法
+  instrument: 人工智能生成合成内容标识办法
+  registry_id: reg-cn-label
+  jurisdiction: CN
+  legal_system: PRC law
+  territory:
+  - CN-mainland
+  industries:
+  - horizontal
+  actors:
+  - provider
+  - platform
+  - user
+  effective_from: '2025-09-01'
+  effective_to: null
+  status: in_force
+  supported: true
+  source_refs:
+  - reg-cn-label
+- scope_id: sc-cn-label-measures
+  label_zh: 中国生成合成内容标识办法
+  instrument: 人工智能生成合成内容标识办法
+  registry_id: reg-cn-label
+  jurisdiction: CN
+  legal_system: PRC law
+  territory:
+  - CN-mainland
+  industries:
+  - horizontal
+  actors:
+  - provider
+  - platform
+  - user
+  effective_from: '2025-09-01'
+  effective_to: null
+  status: in_force
+  supported: true
+  source_refs:
+  - reg-cn-label

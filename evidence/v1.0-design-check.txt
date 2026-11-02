@@ -22,7 +22,7 @@ PASS design marker: Scope Registry
 PASS design marker: resolve_clarify
 PASS design marker: CK-17
 PASS design marker: D-021
-PASS design marker: 32 KU
+PASS design marker: 52 KU
 PASS design marker: final_text
 PASS design marker: validation_token
 PASS design marker: server_nonce
@@ -77,6 +77,10 @@ PASS answer field "verified_by"
 PASS answer field "partial_reason"
 PASS answer field groups
 PASS answer field scope_correction
+PASS evidence exists: evidence/W3-3-*
+PASS evidence exists: evidence/W3-2-*
+PASS evidence exists: evidence/W3-1-*
+PASS evidence exists: evidence/W2-8-*
 PASS evidence exists: evidence/W2-5-cases.json
 PASS evidence exists: evidence/W2-6-cases.json
 PASS evidence exists: evidence/W2-5-*
@@ -124,4 +128,4 @@ PASS scope exclusions count=11 (want >=3)
 PASS scope exclusion fields missing
 PASS sources fulltext count=20 (want 20)
 
-RESULT: PASS  (124 pass / 0 fail)
+RESULT: PASS  (128 pass / 0 fail)

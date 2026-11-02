@@ -1,9 +1,9 @@
 {
-  "kus": 33,
+  "kus": 52,
   "eu": 32,
-  "cn": 1,
+  "cn": 20,
   "errors": 0,
-  "warnings": 65,
+  "warnings": 0,
   "new_eu_ku": 12,
   "note": "W2-5: EU 32 + CN1; full regression green"
 }

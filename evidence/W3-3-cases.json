@@ -1,0 +1,22 @@
+{
+  "ok": true,
+  "cases": {
+    "golden": 20,
+    "negative": 5,
+    "eval_exit": 0,
+    "metrics": {
+      "golden": 20,
+      "mode_ok": 20,
+      "retrieval": "14/15",
+      "citation": "16/16",
+      "sentence_map": "16/16",
+      "unsupported": 0,
+      "host": "15/15",
+      "stability": "15/15",
+      "negative": "5/5"
+    },
+    "skip_exit": 1,
+    "design_v1": true,
+    "check_design": 0
+  }
+}

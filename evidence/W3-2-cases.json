@@ -1,0 +1,21 @@
+{
+  "ok": true,
+  "cases": {
+    "pages": 8,
+    "blocks": 11,
+    "classes": {
+      "concept": 2,
+      "entity": 1,
+      "overview": 2,
+      "source": 2,
+      "topic": 1
+    },
+    "errors": 0,
+    "warnings": 0,
+    "compile_check": 0,
+    "refs_pages": 8,
+    "refs_kus": 9,
+    "page_errors": 0,
+    "refs_errors": 0
+  }
+}

@@ -1,6 +1,7 @@
-# GRC Skill Agent · 设计 v0.9（送 CCC/Gemini 评审）
+# GRC Skill Agent · 设计 v1.0（W3 收尾）
 
-> 状态：**v0.9，W2 收尾统一升版** ｜ 日期：2026-11-01 ｜ 项目：grc-skill-agent
+> 状态：**v1.0，W3 收尾** ｜ 日期：2026-11-02 ｜ 项目：grc-skill-agent
+> v1.0 收口：**52 KU（EU32+CN20）**；**8 页**；**20 金标 + 5 负例**；术语标准 v1.1；W1/W2/W3 实现与评审记录归档。
 > v0.9 变更：KU **29→30 字段**（`scope_id` 必填）；**Scope Registry + CK-17**；clarify/MCP 多选；D-021 无显式法域必须先问；`effective_from` 时间过滤；CK-08 引用/术语锚定；EU 32 + CN 1 = 33 KU。
 > v0.8 基线：已吸收 CCC Round-7（Block 0 / Major 6）；删除机器译文；4 周。
 > v0.8 裁定：**删除机器译文**（V7-02 A）；**周期延到 4 周**（V7-04 C）；意图表区分问法/主题；scope_correction 触发表；evidence 随包。
@@ -13,7 +14,7 @@
 > 自检：记录见 `docs/review/spec-self-review.md`；v0.7 的落点由 `scripts/check_design.py` 逐项核对。
 > 上游依据：本项目继承 `ai-grc-kb-v2-p0-rev4` 的知识契约（下称 rev4），并吸收 `08-四轮缺陷聚类与流程改进建议.md` 的五条根因与 P-1~P-7。
 > 与其它项目关系：**独立仓库、独立命名空间；与 GovernAI / AI-GRC-Consultant 零文件共享、零术语借用**。
-> 本文是唯一设计基线；评审意见按 §13 流程处置后升 v0.9。
+> 本文是唯一设计基线；评审意见按 §13 流程处置后升 v1.0。
 
 ---
 
@@ -23,7 +24,7 @@
 
 **不做什么**：不输出"合规/不合规"结论、不评分、不构成法律意见；MVP 不做自动爬虫、Web UI、多租户、跨法域对比页、向量检索。
 
-**MVP 规模**：**4 周**（V7-04 C）；**W2 完成 33 KU（EU 32 + CN 1）**，目标 **52（CN 余 19 留 W3）**；20 个金标问答 + 5 个独立负例；citation 覆盖 100%；无据必拒答；改 1 条 KU 后 5 分钟内给出过期页清单。
+**MVP 规模**：**4 周**（V7-04 C）；**52 KU（EU 32 + CN 20）**；8 页；**20 个金标问答 + 5 个独立负例**；citation 覆盖 100%；无据必拒答；改 1 条 KU 后 5 分钟内给出过期页清单。
 
 **三个关键设计取舍**：
 1. **只做"评估"不做"判定"**：MVP 不输出适用/不适用结论；范围问题只引用 KU 原文 + `coverage_note` + 免责。determine 与规则引擎推迟到 v0.2。
@@ -104,7 +105,7 @@ rev1→rev4 五轮把一个"法条 → KU → 派生页 → 校验"的可审计�
 
 | 类别 | 内容 |
 |---|---|
-| 知识 | **EU 32 KU 已全部入库**（Art.2/5/6/8–16/26/27/50/113 + Annex III 4 类）+ **CN 1 KU（art7）**；CN 其余 19 留 W3；页面 concept/entity/overview/source 四类已建 |
+| 知识 | **52 KU**：EU 32（Art.2/5/6/8–16/26/27/50/113 + Annex III 4 类）+ CN 20（暂行办法 13 + 标识办法 7）；页面 8 页（concept/entity/overview/source/topic） |
 | 能力 | MCP 六工具（只读）：`search_kus` `get_ku` `get_page` `ask` `validate_answer` `freshness` + `resolve_clarify`（clarify 多选）；CLI `grc` 另有 `ingest/validate/compile/impact/publish/verify-source`（写操作不对 Agent 暴露） |
 | 更新 | registry + Tier A 全文快照 + verification.yaml + fingerprint + impact 矩阵 + log.md/refs.json + 人审签署 |
 | 分发 | `skills/grc-agent/SKILL.md`（DSH 与 Claude Code 共用体）+ Codex `AGENTS.md` 适配说明 |
@@ -202,7 +203,7 @@ KU YAML（30 字段，gsk-*）── validate（CK-01~17）── compile ──
 
 ### 5.1 原样继承（不重新发明）
 
-- **KU 30 字段** = 17 fact-bearing（#2–#18）+ 12 bookkeeping（#1 + #19–#29）+ **`scope_id`（#30）**；`instrument_type` 11 值闭合；`locator` **7 形态**（§5.2 C4）；`gap` 为登记对象不入 29。
+- **KU 30 字段** = 17 fact-bearing（#2–#18）+ 12 bookkeeping（#1 + #19–#29）+ **`scope_id`（#30）**；项目术语以 `docs/standards/terminology-standard.md`（v1.1）为准；`instrument_type` 11 值闭合；`locator` **7 形态**（§5.2 C4）；`gap` 为登记对象不入 29。
 - **六类页面**必备段、`kb:derived` / `kb:table` 语法、`render_hash` / `ku_hash` 计算、`rendered_blocks` 与块 id 规则、结构声明行白名单（3 字段）。
 - **17 条校验** CK-01~17（v0.7 增 CK-14 absence、CK-15 核验来源、CK-16 日期 token；v0.9 增 CK-17 Scope）；WS-01~09；DF-1~6 / DF-4b / DF-4c 与 EX-1~7；front-matter 8 键；`log.md` 4 列；`refs.json` 4 键。
 - **08 根因对策**：P-1 数字/命名生成化；P-2 变更影响面矩阵；P-3 规则四要素（判定主体/输入/闭合值域/错误码）；P-4 探针正反基线；P-5 证据 lint。
@@ -537,9 +538,9 @@ evidence:
 
 ## 9. 评估与质量门禁
 
-### 9.1 金标集（W2 冻结 10 题 + 独立负例 5 题；20 题目标 W3）
+### 9.1 金标集（W3 冻结 20 题 + 独立负例 5 题）
 
-- **W2 金标 10 题**（`eval/golden.yaml`，W3 扩到 20，附录 A 保留）：`id / question / language / expected_mode / expected_claim_ku_ids / expected_refusal_reason / expected_coverage_note / expected_facts / forbidden_terms / retrieval_expect / partial_reason?`。`expected_facts` 由非规则作者独立撰写（防自评）。
+- **W3 金标 20 题**（`eval/golden.yaml`，对应附录 A）：`id / question / language / expected_mode / expected_claim_ku_ids / expected_refusal_reason / expected_coverage_note / expected_facts / forbidden_terms / retrieval_expect / partial_reason?`。`expected_facts` 由非规则作者独立撰写（防自评）。
 - **拒答题固定 5 题**：#4（out_of_scope，sx-eu-gpai）、#9（scope_correction）、#10（not_legal_advice）、#17（scope_correction）、#20（not_legal_advice）——脚本可复算 5/5。
 - **独立负例 5 题**：`eval/adversarial.yaml`，不计入金标分母。
 - **检索验收**：每题 `retrieval_expect`；top5 召回 ≥18/20；每题至少 1 个别名（lint 强制）；`no_ku` 判据 = 最低分阈值 + 必含词未命中；主题链由 `catalog.topics` 展开。
@@ -583,7 +584,7 @@ evidence:
 | **W1-0** | **契约干跑门禁**：publish 态样例跑 CK + 一次 ask | publish 态样例全绿（draft 仅 smoke）；ask 入 `evidence/` |
 | **W1** | 仓库骨架、core（schema/validate/compile/index/binder）、EU 20 KU、CLI、10 金标 | `grc validate` 全绿；`grc ask` 10 题跑通；CK 探针正反基线 |
 | **W2** | **已完成**：EU 32 + CN1、4 页面、MCP 六工具 + clarify、Scope Registry、CK-17、eval 10+5、CK-08 锚定 | `grc validate` 0 errors；eval 10/10；MCP 可调用；W2-7 升 v0.9 |
-| **W3** | update 闭环 + impact 矩阵、DSH/CC skill 适配、eval CI、demo、README/免责 | 变更演示 <5 分钟；两家宿主各 3 问；`grc eval` 一条命令全绿 |
+| **W3** | **已完成**：CN 19 KU（52 总）、8 页、20 金标、impact、MCP/skill、术语标准 v1.1 | 52 KU、0/0；eval 20/20；8 页；W3-3 升 v1.0 |
 | **W4** | 缓冲/收口：CCC 复审、缺陷清零、spec v1.0 冻结、发布包（不含快照） | 全部 Block 关闭；`grc eval` 复跑全绿；发布清单核对 |
 
 **人力假设（V7-04 C：延到 4 周）**：工程 **16–19 人日**（schema/validate/compile/index/answer/validate_answer/MCP/CI/eval）+ 研究 **8–10 人日**（52 KU 录入与核验）；4 周 = 20 个工作日，单人工程可覆盖，W4 作缓冲；单人核验用 `UNVERIFIED`。
@@ -675,7 +676,7 @@ evidence:
 
 ## 附录 C · 继承契约差异表
 
-| 项 | rev4 | v0.9 | 原因 |
+| 项 | rev4 | v1.0 | 原因 |
 |---|---|---|---|
 | 快照 | 全文快照 | **Tier A 全文快照**（公开法律文本，不商业转售）+ verification.yaml | 审计可执行（C1） |
 | CK-03 | 快照逐字命中 | online/manual/offline + freshness 两轴 | C1 的后果；EUR-Lex 走 manual |

@@ -69,6 +69,8 @@
 
 ---
 
+| D-022 | 2026-11-01 | 术语标准来源 | 整合 `AI-GRC-Consultant/00_glossary.md` + `10_terminology_standard.md`，形成 GRC Skill Agent 术语标准；项目用词以整合版为准 | `docs/standards/terminology-standard.md`；设计/代码引用 key |
+
 ## 待办 / 未决
 
 | 项 | 状态 | 说明 |

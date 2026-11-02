@@ -1,0 +1,17 @@
+{
+  "ok": true,
+  "cases": {
+    "total": 52,
+    "eu": 32,
+    "cn": 20,
+    "genai": 13,
+    "label": 7,
+    "scopes": 10,
+    "errors": 0,
+    "warnings": 0,
+    "cn_query_mode": "answer",
+    "cn_scope_ids": [
+      "sc-cn-genai-measures"
+    ]
+  }
+}
