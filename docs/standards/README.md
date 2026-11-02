@@ -2,7 +2,7 @@
 
 | 文件 | 状态 | 说明 |
 |---|---|---|
-| `terminology-standard.md` | **v1.0（2026-11-01）** | GRC Skill Agent 术语标准；整合 AI-GRC-Consultant 00 + 10，项目用词唯一规范 |
+| `terminology-standard.md` | **v1.1（2026-11-01）** | GRC Skill Agent 术语标准；整合 AI-GRC-Consultant 00 + 10，项目用词唯一规范 |
 | `terminology-standard-review-checklist.md` | v1.0 | 给 Reviewer 的 10 问检查清单 |
 
 ## 来源

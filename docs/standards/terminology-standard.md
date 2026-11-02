@@ -1,6 +1,7 @@
-# GRC Skill Agent · 术语标准 v1.0
+# GRC Skill Agent · 术语标准 v1.1
 
-> 状态：**v1.0（2026-11-01）** ｜ 项目：GRC Skill Agent ｜ 适用：设计、KU、页面、答案、MCP、eval、评审文档
+> 状态：**v1.1（2026-11-01）** ｜ 项目：GRC Skill Agent ｜ 适用：设计、KU、页面、答案、MCP、eval、评审文档
+> v1.1 修订（Reviewer A / 附条件）：补 `effective_from`/`reference-only`/`resolve_clarify`；区分 `transition` vs `in_force`；补术语检查映射。
 > **效力**：本文是 **GRC Skill Agent 的项目用词唯一规范**。设计/代码/页面/答案中的术语以本文为准；与来源文档冲突处，按本文「本项目取用」列。
 > **来源整合**：
 > - `AI-GRC-Consultant/00_glossary.md`（项目版本 1.0，文档修订 v3.1，2026-10-18）：各体系**原义与出处**。
@@ -169,6 +170,9 @@ L2 实施层 / L3 评估层 / L4 风险与处置层（本项目 out of scope）
 | `T-KU` | **KU（Knowledge Unit）** | 一条法条/条款的知识单元；30 字段 YAML；含 `ku_id`、`verbatim_excerpt`、`scope_id`、核验字段 | `kb/ku/*.yaml`、`schema.py` |
 | `T-SCOPE` | **Scope** | 适用范围对象：法域/法系/地域/行业/主体/生效时间/效力状态 | `kb/scopes.yaml` |
 | `T-SCOPE-ID` | **Scope ID** | 稳定标识 `sc-<jur>-<instrument>-<variant>`；每 KU 一个 | KU `scope_id`；CK-17 |
+| `T-SCOPE-TIME` | **effective_from / effective_to** | Scope 的生效/失效日；ISO 日期；`effective_from` 必填；`effective_to<from` 非法 | `kb/scopes.yaml`；CK-17；`scope_time_status()` |
+| `T-REF-ONLY` | **reference-only** | 非约束性框架（NIST/ISO/SOC2）；只作建议，不作为法条义务回答；选中时 `OUT_OF_SCOPE` | `kb/scopes.yaml` `supported:false`；clarify |
+| `T-RESOLVE-CLARIFY` | **resolve_clarify** | clarify 的解析动作：`clarify_id + selected_option_ids + other_text?` → answer/partial/refuse | `clarify.py`；MCP `resolve_clarify` |
 | `T-SNAPSHOT` | **Full-text snapshot** | Tier A 官方全文快照（本地；不随包）；KU excerpt 必须是其连续子串 | `kb/snapshots/` |
 | `T-CLAIM` | **Claim** | KU 派生的证据单元；绑定 `ku_ids`/`locator`/`verbatim`；`binding_mode=quote\|frame` | `answer.py`/`validate_answer.py` |
 | `T-SENT` | **候选句（Candidate sentence）** | core 生成的句子；带 `sid`/`claim_ids`/`required`/`order`/`verbatim` | `ask` 输出 |
@@ -198,6 +202,23 @@ L2 实施层 / L3 评估层 / L4 风险与处置层（本项目 out of scope）
 | 证据 = 证明成立 | `Evidence`（依据） vs `Evidence (Probo)`（收集状态） | 同名异指 |
 
 ---
+
+### 5.2 Scope 效力状态与时间语义
+
+**不得把“已收录”当成“已生效”。**
+
+| 状态 | 含义 | 问答行为 |
+|---|---|---|
+| `in_force` | 在 `as_of` 日已生效、可约束 | 可引用为当前义务 |
+| `transition` | 已通过但**尚未完全适用**（`effective_from` 在未来） | `partial(scope_time)` + 必选“尚未生效”句；**current 查询硬移除 future claims** |
+| `reference_only` | 标准/框架，非法律义务 | 仅作建议；纯选 → `OUT_OF_SCOPE`，不冒充法条 |
+| `repealed` | 已废止 | 不得作为当前义务；提示失效 |
+| `expired` | 超过 `effective_to` | 不得作为当前义务；`partial(scope_time)` |
+
+- `scope_time_status()` 值：`future | in_force | expired | reference`；future 判定优先于 status=transition。
+- `effective_from`/`effective_to` 是 **Scope** 字段；KU 的 `effective_date` 不能替代它。
+- **in_force vs transition**：`in_force` 是“已生效”；`transition` 是“已通过、未到适用日”；二者不得混写为“生效”。
+- 时间过滤是**运行期**门禁，不只校验期：`ask` 必须注入 `stime`，current 查询必须移除 future claims。
 
 ## 6. 裸词禁用与同名异指
 
@@ -255,6 +276,17 @@ L2 实施层 / L3 评估层 / L4 风险与处置层（本项目 out of scope）
 
 ---
 
+### 8.1 术语检查（lint/CI）
+
+| 检查 | 当前 | 目标 |
+|---|---|---|
+| 裸词（Control/Measure/…） | 人工评审 + 本标准的 §6；**尚未自动化** | `scripts/check_terms.py` 扫描 `docs/`/`spec/`/页面；W3 接入 `impact_ci` |
+| 概念 key 唯一 | 本标准维护；`T-…` 不重复 | 同一脚本校验 key 表 |
+| 术语与代码一致性 | `check_design.py` + W2 回归 | 增加 `scope_id`/`clarify`/`effective_from` 断言 |
+| ISO/IIA 原文复制 | 人工/评审 | 扫描 ISO/IIA 引文块；只允许条款号+释义 |
+
+> 诚实声明：`scripts/check_terms.py` **尚未实现**；当前靠本标准 + 评审。Reviewer 若要求“固化”，W3 首项交付脚本，不假装已有 CI。
+
 ## 9. 与其他文档的关系
 
 | 文档 | 关系 |
@@ -278,6 +310,8 @@ L2 实施层 / L3 评估层 / L4 风险与处置层（本项目 out of scope）
 | CN 法域更多术语 | 待补 | 标识办法/算法推荐等入库时补 |
 
 **维护**：本文每次修订需更新版本、决策日志；新增 KU/Scope/MCP 术语时同步本文 key；评审时检查裸词与「判定/合规结论」。
+
+**版本**：v1.1（2026-11-01）——吸收 Terminology Review A 的 3 项条件；v1.0 为首版。
 
 ---
 
