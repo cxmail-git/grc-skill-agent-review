@@ -41,8 +41,8 @@ for f in ['docs/research/sample-kus/gsk-eu-art14.yaml','docs/research/sample-kus
     (ok if str(d.get('fingerprint',''))!='minhash96:'+'0'*95+'1' else fail)(f'{f}: fingerprint not shared placeholder')
 
 # 3) design markers
-dsg=(ROOT/'docs/specs/2026-10-31-grc-skill-agent-design-v0.8.md').read_text(encoding='utf-8')
-markers=['7 形态','只选句','final_text','validation_token','server_nonce','REQUIRED_SENTENCE','CONCLUSION_FORBIDDEN','conclusion_terms','issued_vs_validated','全文快照','不随包','verification_mode','verification_path','absence_kind','absence_terms','scope_note_codes','CK-16','coverage_codes','out_of_scope','backlog','groups','CK-14','CK-15','评估','Art.5 选 7 项','= **32**','16–19 人日','4 周','W4','无机器译文','scope_correction']
+dsg=(ROOT/'docs/specs/2026-10-31-grc-skill-agent-design-v0.9.md').read_text(encoding='utf-8')
+markers=['7 形态','只选句','scope_id','Scope Registry','resolve_clarify','CK-17','D-021','32 KU','final_text','validation_token','server_nonce','REQUIRED_SENTENCE','CONCLUSION_FORBIDDEN','conclusion_terms','issued_vs_validated','全文快照','不随包','verification_mode','verification_path','absence_kind','absence_terms','scope_note_codes','CK-16','coverage_codes','out_of_scope','backlog','groups','CK-14','CK-15','评估','Art.5 选 7 项','= **32**','16–19 人日','4 周','W4','无机器译文','scope_correction']
 for m in markers:
     (ok if m in dsg else fail)(f'design marker: {m}')
 for badstr in ['只存摘录','不重分发全文','Art.53–55','宿主成文','determination.yaml','determination.md','Art.5 选 5 项','insufficient_profile','零第三方运行时依赖','v0.4 决定','双人核','#Art.14(1)','binding_mode: translation','三模式','3 周内','四态']:
@@ -56,8 +56,10 @@ for k in ['"claims"','"binding_mode"','"support_type"','"verification_url"','"ve
     (ok if k in dsg else fail)(f'answer field {k}')
 # 5) impact matrix
 im=(ROOT/'docs/impact-matrix.md').read_text(encoding='utf-8')
+import glob as _glob
 for p in re.findall(r'`(evidence/[^`]+)`',im):
-    (ok if (ROOT/p).exists() else fail)(f'evidence exists: {p}')
+    found = _glob.glob(str(ROOT/p))
+    (ok if found else fail)(f'evidence exists: {p}')
 
 # 6) golden / aliases / scope exclusions / sources
 try:

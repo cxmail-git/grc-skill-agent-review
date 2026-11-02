@@ -43,6 +43,14 @@
 
 **未收录（登记 `scope_exclusions.yaml`）**：Art.5 其余项（a/b/bb）；Annex III 其余类别（2/6/7/8）；Art.17/19/43/49/99；GPAI 章 Art.51–56。
 
+## W2-5：EU 32 已全部入库（2026-11-01）
+
+W1-7 的 20 条 + W2-5 的 12 条 = EU 32；CN 20 中目前仅 art7，其余留 W3。
+
+## W1-7 入选 20（EU）
+
+`Art.2`、`Art.5(1)(c/d/e/f/g/h/ba)`、`Art.6(1/2/3)`、`Annex III point 1/3/4/5`、`Art.8/9/10/11/14`。其余 12 条 EU 留 W2。
+
 ## CN《生成式人工智能服务管理暂行办法》（13）
 
 | # | ku_id | locator | 标题 | nature |

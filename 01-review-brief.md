@@ -1,6 +1,6 @@
 # CCC 独立设计评审 · 评审说明（v0.1）
 
-> 评审对象：`GRC Skill Agent · 设计 v0.8`
+> 评审对象：`GRC Skill Agent · 设计 v0.9`
 > 评审人：Claude Code Cloud（独立第三方）｜ 评审日期：____ ｜ 评审轮次：第 3 轮（v0.3）
 > **你只做评审，不写代码、不改被评文件、不替作者做设计决策。**
 
@@ -16,7 +16,7 @@
 
 | # | 文件 | 用途 |
 |---|---|---|
-| 1 | `02-design-v0.8.md` | **被评对象**（v0.8 = v0.7 + CCC Round-7 处置） |
+| 1 | `02-design-v0.9.md` | **被评对象**（v0.9 = v0.8 + W2 统一升版） |
 | 2 | `03-contract-digest.md` | 继承契约摘要（29 字段 / CK-01~13 / WS / DF / EX / 7 形态 locator） |
 | 3 | `review/attachments/rev4-ku-schema.md` | 上游字段契约全文（核对摘要是否失真时用） |
 | 4 | `review/attachments/rev4-wiki-schema.md` | 上游页面/校验契约全文（同上） |

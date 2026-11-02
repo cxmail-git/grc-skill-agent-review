@@ -17,6 +17,12 @@ PASS docs/research/sample-kus/gsk-cn-genai-art7.yaml: registry_id source-level
 PASS docs/research/sample-kus/gsk-cn-genai-art7.yaml: fingerprint not shared placeholder
 PASS design marker: 7 形态
 PASS design marker: 只选句
+PASS design marker: scope_id
+PASS design marker: Scope Registry
+PASS design marker: resolve_clarify
+PASS design marker: CK-17
+PASS design marker: D-021
+PASS design marker: 32 KU
 PASS design marker: final_text
 PASS design marker: validation_token
 PASS design marker: server_nonce
@@ -71,6 +77,36 @@ PASS answer field "verified_by"
 PASS answer field "partial_reason"
 PASS answer field groups
 PASS answer field scope_correction
+PASS evidence exists: evidence/W2-5-cases.json
+PASS evidence exists: evidence/W2-6-cases.json
+PASS evidence exists: evidence/W2-5-*
+PASS evidence exists: evidence/W2-4-cases.json
+PASS evidence exists: evidence/W2-3-cases.json
+PASS evidence exists: evidence/W2-2-cases.json
+PASS evidence exists: evidence/W2-scope-*
+PASS evidence exists: evidence/W2-scope-cases.json
+PASS evidence exists: evidence/W1-10-cases.json
+PASS evidence exists: evidence/W1-9-2-cases.json
+PASS evidence exists: evidence/W1-9-cases.json
+PASS evidence exists: evidence/W1-8-*
+PASS evidence exists: evidence/W1-8-cases.json
+PASS evidence exists: evidence/W1-7-*
+PASS evidence exists: evidence/W1-6-3-*
+PASS evidence exists: evidence/W1-6-3-cases.json
+PASS evidence exists: evidence/W1-6-2-*
+PASS evidence exists: evidence/W1-6-2-cases.json
+PASS evidence exists: evidence/W1-6-1-*
+PASS evidence exists: evidence/W1-6-1-cases.json
+PASS evidence exists: evidence/W1-9-cases.json
+PASS evidence exists: evidence/W1-6-cases.json
+PASS evidence exists: evidence/W1-5-cases.json
+PASS evidence exists: evidence/W1-4-cases.json
+PASS evidence exists: evidence/W1-3-1-*
+PASS evidence exists: evidence/W1-3-1-cases.json
+PASS evidence exists: evidence/W1-3-run.txt
+PASS evidence exists: evidence/W1-2-run.txt
+PASS evidence exists: evidence/W1-2-cases.json
+PASS evidence exists: evidence/W1-1-log-validate.txt
 PASS evidence exists: evidence/CH-C4-locator-check.txt
 PASS evidence exists: evidence/v0.4-design-check.txt
 PASS evidence exists: evidence/v0.4-design-check.txt
@@ -88,4 +124,4 @@ PASS scope exclusions count=11 (want >=3)
 PASS scope exclusion fields missing
 PASS sources fulltext count=20 (want 20)
 
-RESULT: PASS  (88 pass / 0 fail)
+RESULT: PASS  (124 pass / 0 fail)
